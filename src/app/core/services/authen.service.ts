@@ -6,11 +6,10 @@ import { LoggedInUser } from '../domain/loggedin.user';
 
 @Injectable()
 export class AuthenService {
-
   constructor(private _http: Http) { }
-
+  
   login(username: string, password: string) {
-    let body = "username=" + encodeURIComponent(username) +
+    let body = "userName=" + encodeURIComponent(username) +
       "&password=" + encodeURIComponent(password) +
       "&grant_type=password";
 
