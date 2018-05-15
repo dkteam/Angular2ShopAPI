@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
   constructor(private _utilityService: UtilityService, private _authenService: AuthenService) { }
 
   ngOnInit() {
-    this.user=JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER));
+    this.user = JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER));
   }
 
   logout() {
