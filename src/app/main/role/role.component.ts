@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../core/services/data.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { NotificationService } from '../../core/services/notification.service';
+import { MessageConstants } from '../../core/common/message.constants';
 
 @Component({
   selector: 'app-role',
@@ -7,14 +10,16 @@ import { DataService } from '../../core/services/data.service';
   styleUrls: ['./role.component.css']
 })
 export class RoleComponent implements OnInit {
+  @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
   public pageIndex: number = 1;
   public pageSize: number = 10;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
   public roles: any[];
+  public entity: any;
 
-  constructor(private _dataService: DataService) { }
+  constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
 
   ngOnInit() {
     this.loadData();
@@ -31,7 +36,33 @@ export class RoleComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.pageIndex=event.page;
+    this.pageIndex = event.page;
     this.loadData();
+  }
+
+  showAddEditModal() {
+    this.entity = {};
+    this.modalAddEdit.show();
+  }
+
+  saveChanged(valid: boolean) {
+    if (valid) {
+      if (this.entity.Id == undefined) {
+        this._dataService.post('/api/appRole/add', JSON.stringify(this.entity))
+          .subscribe((respone: any) => {
+            this.loadData();
+            this.modalAddEdit.hide();
+            this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+          }, error => this._dataService.handleError(error));
+      }
+      else {
+        // this._dataService.put('/api/appRole/add', JSON.parse(this.entity))
+        // .subscribe((respone: any) => {
+        //   this.loadData();
+        //   this.modalAddEdit.hide();
+        //   this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+        // }, error => this._dataService.handleError(error));
+      }
+    }
   }
 }
