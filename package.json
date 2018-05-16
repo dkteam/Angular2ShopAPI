@@ -33,6 +33,7 @@
     "icheck": "^1.0.2",
     "jquery": "^2.2.4",
     "jqvmap": "^1.5.1",
+    "ngx-bootstrap": "^2.0.5",
     "nprogress": "^0.2.0",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
