@@ -80,12 +80,8 @@
                 <td class=" ">{{role.Name}}</td>
                 <td class=" ">{{role.Description}}</td>
                 <td class="last" style="text-align: center;">
-                  <button class="btn btn-primary">
-                    <i class="fa fa-pencil-square-o"></i>
-                  </button>
-                  <button class="btn btn-danger">
-                    <i class="fa fa-trash"></i>
-                  </button>
+                  <button class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -95,8 +91,6 @@
               [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -136,7 +130,7 @@
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-              <button type="button" (click)="frmAddEdit.hide()" class="btn btn-default">Hủy bỏ</button>
+              <button type="button" (click)="modalAddEdit.hide()" class="btn btn-default">Hủy bỏ</button>
               <button type="submit" class="btn btn-dark" [disabled]="!frmAddEdit.form.valid">Lưu</button>
             </div>
           </div>

@@ -35,6 +35,13 @@ export class RoleComponent implements OnInit {
       });
   }
 
+  loadRole(id: any) {
+    this._dataService.get('/api/appRole/detail/' + id)
+      .subscribe((respone: any) => {
+        this.entity = respone;
+      });
+  }
+
   pageChanged(event: any): void {
     this.pageIndex = event.page;
     this.loadData();
@@ -42,6 +49,11 @@ export class RoleComponent implements OnInit {
 
   showAddEditModal() {
     this.entity = {};
+    this.modalAddEdit.show();
+  }
+
+  showEditModal(id:any) {
+    this.loadRole(id);
     this.modalAddEdit.show();
   }
 
@@ -56,12 +68,12 @@ export class RoleComponent implements OnInit {
           }, error => this._dataService.handleError(error));
       }
       else {
-        // this._dataService.put('/api/appRole/add', JSON.parse(this.entity))
-        // .subscribe((respone: any) => {
-        //   this.loadData();
-        //   this.modalAddEdit.hide();
-        //   this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-        // }, error => this._dataService.handleError(error));
+        this._dataService.put('/api/appRole/update', JSON.stringify(this.entity))
+          .subscribe((respone: any) => {
+            this.loadData();
+            this.modalAddEdit.hide();
+            this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+          }, error => this._dataService.handleError(error));
       }
     }
   }
