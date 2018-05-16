@@ -81,7 +81,7 @@
                 <td class=" ">{{role.Description}}</td>
                 <td class="last" style="text-align: center;">
                   <button class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
-                  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                  <button class="btn btn-danger" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>

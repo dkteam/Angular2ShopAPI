@@ -52,7 +52,7 @@ export class RoleComponent implements OnInit {
     this.modalAddEdit.show();
   }
 
-  showEditModal(id:any) {
+  showEditModal(id: any) {
     this.loadRole(id);
     this.modalAddEdit.show();
   }
@@ -76,5 +76,19 @@ export class RoleComponent implements OnInit {
           }, error => this._dataService.handleError(error));
       }
     }
+  }
+
+  deleteItem(id: any) {
+    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this.deleteItemConfirm(id)
+    });
+  }
+
+  deleteItemConfirm(id: any) {
+    this._dataService.del('/api/appRole/delete', 'id', id)
+      .subscribe((respone: Response) => {
+        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
+        this.loadData();
+      });
   }
 }
