@@ -3,6 +3,7 @@ import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
 import { MessageConstants } from '../../core/common/message.constants';
+import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
 @Component({
   selector: 'app-user',
@@ -11,6 +12,7 @@ import { MessageConstants } from '../../core/common/message.constants';
 })
 export class UserComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
+  public myRoles: string[] = [];
   public pageIndex: number = 1;
   public pageSize: number = 10;
   public pageDisplay: number = 10;
@@ -19,9 +21,46 @@ export class UserComponent implements OnInit {
   public users: any[];
   public entity: any;
 
+  public allRoles: IMultiSelectOption[] = [];
+  public roles: any[];
+
+  mySettings: IMultiSelectSettings = {
+    enableSearch: true,
+    checkedStyle: 'fontawesome',
+    buttonClasses: 'btn btn-primary',
+    dynamicTitleMaxItems: 5,
+    displayAllSelectedText: true,
+    showCheckAll: true,
+    stopScrollPropagation:true,
+    showUncheckAll: true,
+  };
+
+  // Text configuration
+  myTexts: IMultiSelectTexts = {
+    checkAll: 'Đã chọn tất cả',
+    uncheckAll: 'Bỏ chọn tất cả',
+    checked: 'Đã chọn',
+    checkedPlural: 'Đã chọn',
+    searchPlaceholder: 'Tìm...',
+    searchEmptyResult: 'Không tìm thấy...',
+    searchNoRenderText: 'Gõ từ khóa cần tìm...',
+    defaultTitle: 'Chọn nhóm...',
+    allSelected: 'Tất cả',
+  };
+
+  // see original project for full list of options
+  // can also be setup using the config service to apply to multiple pickers
+  public dateOptions: any = {
+    locale: { format: 'DD/MM/YYYY' },
+    alwaysShowCalendars: false,
+    singleDatePicker: true,
+    showDropdowns: true
+  };
+
   constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.loadRoles();
     this.loadData();
   }
 
@@ -35,7 +74,16 @@ export class UserComponent implements OnInit {
       });
   }
 
-  loadRole(id: any) {
+  loadRoles() {
+    this._dataService.get('/api/appRole/getlistall').subscribe((response: any[]) => {
+      this.allRoles = [];
+      for (let role of response) {
+        this.allRoles.push({ id: role.Name, name: role.Description });
+      }
+    }, error => this._dataService.handleError(error));
+  }
+
+  loadUserDetail(id: any) {
     this._dataService.get('/api/appUser/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
@@ -53,7 +101,7 @@ export class UserComponent implements OnInit {
   }
 
   showEditModal(id: any) {
-    this.loadRole(id);
+    this.loadUserDetail(id);
     this.modalAddEdit.show();
   }
 
@@ -90,5 +138,9 @@ export class UserComponent implements OnInit {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.loadData();
       });
+  }
+
+  public selectGender(event) {
+    this.entity.Gender = event.target.value;
   }
 }
