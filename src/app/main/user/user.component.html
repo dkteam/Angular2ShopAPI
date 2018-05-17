@@ -117,8 +117,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal form-label-left" novalidate #frmAddEdit="ngForm" (ngSubmit)="saveChanged(frmAddEdit.valid)"
-          *ngIf="entity">
+        <form class="form-horizontal form-label-left" novalidate #frmAddEdit="ngForm" (ngSubmit)="saveChanged(frmAddEdit.valid)" *ngIf="entity">
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên </label>
             <div class="col-md-9 col-sm-9 col-xs-12">

@@ -5,6 +5,8 @@ import { NotificationService } from '../../core/services/notification.service';
 import { MessageConstants } from '../../core/common/message.constants';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
+declare var moment: any;
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -31,7 +33,7 @@ export class UserComponent implements OnInit {
     dynamicTitleMaxItems: 5,
     displayAllSelectedText: true,
     showCheckAll: true,
-    stopScrollPropagation:true,
+    stopScrollPropagation: true,
     showUncheckAll: true,
   };
 
@@ -87,6 +89,11 @@ export class UserComponent implements OnInit {
     this._dataService.get('/api/appUser/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
+
+        for(let role of this.entity.Roles){
+          this.myRoles.push(role);
+        }
+        this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
       });
   }
 
