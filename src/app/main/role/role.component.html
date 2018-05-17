@@ -8,9 +8,9 @@
   <div class="title_right">
     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Gõ tên quyền cần tìm...">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên quyền cần tìm...">
         <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Tìm kiếm!</button>
+          <button class="btn btn-default" type="button" (click)="loadData()">Tìm kiếm!</button>
         </span>
       </div>
     </div>
@@ -122,7 +122,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <textarea type="text" #description="ngModel" required [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
-              <small [hidden]="name.valid || (name.pristine && !frmAddEdit.submitted)" class="text-danger">
+              <small [hidden]="description.valid || (description.pristine && !frmAddEdit.submitted)" class="text-danger">
                 Bạn phải nhập mô tả
               </small>
             </div>
