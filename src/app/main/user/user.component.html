@@ -21,7 +21,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button class="btn btn-success" (click)="showAddEditModal()">Thêm người dùng</button>
+        <button class="btn btn-success" title="Thêm user" (click)="showAddEditModal()">Thêm người dùng</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -88,10 +88,10 @@
                 <td class=" ">{{user.FullName}}</td>
                 <td class=" ">{{user.PhoneNumber}}</td>
                 <td class=" ">{{user.Email}}</td>
-                <td class=" ">{{user.BirthDay}}</td>
+                <td class=" ">{{user.BirthDay | date: 'dd/MM/yyyy'}}</td>
                 <td class="last" style="width: 7%;" style="text-align: center;">
-                  <button class="btn btn-primary" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
-                  <button class="btn btn-danger" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button>
+                  <button class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -176,7 +176,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Ngày sinh</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #birthday="ngModel" daterangepicker [options]="dateOptions" [(ngModel)]="entity.BirthDay" name="birthday" class="form-control" />
+              <input type="text" #birthday="ngModel" daterangepicker  (selected)="selectedDate($event)" [options]="dateOptions" [(ngModel)]="entity.BirthDay" name="birthday" class="form-control" />
             </div>
           </div>
           <div class="form-group">

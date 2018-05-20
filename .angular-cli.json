@@ -25,7 +25,8 @@
         "../node_modules/animate.css/animate.min.css",
         "../node_modules/alertifyjs/build/css/alertify.css",
         "../node_modules/alertifyjs/build/css/themes/default.css",
-        "../node_modules/icheck/skins/flat/green.css",
+        "../node_modules/icheck/skins/flat/green.css",        
+        "../node_modules/angular-tree-component/dist/angular-tree-component.css",
         "../src/assets/css/custom.css",
         "styles.css"
       ],

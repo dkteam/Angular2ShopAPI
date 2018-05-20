@@ -21,7 +21,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button class="btn btn-success" (click)="showAddEditModal()">Thêm quyền</button>
+        <button class="btn btn-success" title="Thêm quyền" (click)="showAddEditModal()">Thêm quyền</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -80,8 +80,8 @@
                 <td class=" ">{{role.Name}}</td>
                 <td class=" ">{{role.Description}}</td>
                 <td class="last" style="text-align: center;">
-                  <button class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
-                  <button class="btn btn-danger" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>
+                  <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>
                 </td>
               </tr>
             </tbody>
