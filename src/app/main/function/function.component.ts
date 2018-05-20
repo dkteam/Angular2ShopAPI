@@ -14,6 +14,7 @@ import { MessageConstants } from '../../core/common/message.constants';
 })
 export class FunctionComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
+  @ViewChild('permissionModal') public permissionModal: ModalDirective;
   @ViewChild(TreeComponent) private treeFunction: TreeComponent;
   public _functionHierachy: any[];
   public _functions: any[];
@@ -21,6 +22,8 @@ export class FunctionComponent implements OnInit {
   public entity: any;
   public editFlag: boolean;
   public filter: string = '';
+  public _functionId: string;
+  public _permissions: any[];
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
@@ -28,6 +31,27 @@ export class FunctionComponent implements OnInit {
 
   ngOnInit() {
     this.search();
+  }
+
+  public showPermission(id: any) {
+    this._dataService.get('/api/appRole/getAllPermission?functionId=' + id).subscribe((response: any[]) => {
+      this._functionId = id;
+      this._permissions = response;
+      this.permissionModal.show();
+    }, error => this._dataService.handleError(error));
+  }
+
+  public savePermission(valid: boolean, _permissions: any[]) {
+    if (valid) {
+      var data = {
+        Permissions: this._permissions,
+        FunctionId: this._functionId
+      }
+      this._dataService.post('/api/appRole/savePermission', JSON.stringify(data)).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(response);
+        this.permissionModal.hide();
+      }, error => this._dataService.handleError(error));
+    }
   }
 
   public showAddModal() {
