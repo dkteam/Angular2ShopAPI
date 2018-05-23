@@ -82,6 +82,8 @@
                 <td class="last" style="text-align: center;">
                   <button *ngIf="role.Name != 'Admin'" class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
                   <button *ngIf="role.Name != 'Admin'" class="btn btn-danger" title="Xóa" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>
+                  <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button> -->
                 </td>
               </tr>
             </tbody>

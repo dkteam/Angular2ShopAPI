@@ -3,8 +3,10 @@ import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
 import { UploadService } from '../../core/services/upload.service';
+import { UtilityService } from '../../core/services/utility.service';
 import { MessageConstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
+import { AuthenService } from '../../core/services/authen.service';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 
 declare var moment: any;
@@ -66,8 +68,14 @@ export class UserComponent implements OnInit {
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
-    private _uploadService: UploadService
-  ) { }
+    private _uploadService: UploadService,
+    private _utilityService: UtilityService,
+    public _authenService: AuthenService
+  ) {
+    if (_authenService.checkAccess('USER') == false) {
+      _utilityService.navigateToLogin();
+    }
+  }
 
   ngOnInit() {
     this.loadRoles();
@@ -97,6 +105,7 @@ export class UserComponent implements OnInit {
     this._dataService.get('/api/appUser/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
+        this.myRoles = [];
 
         for (let role of this.entity.Roles) {
           this.myRoles.push(role);

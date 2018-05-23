@@ -21,7 +21,8 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button class="btn btn-success" title="Thêm user" (click)="showAddEditModal()">Thêm người dùng</button>
+        <!-- <button class="btn btn-success" title="Thêm user" (click)="showAddEditModal()">Thêm người dùng</button> -->
+        <button *ngIf="_authenService.hasPermission('USER','create')" class="btn btn-success" title="Thêm user" (click)="showAddEditModal()">Thêm người dùng</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -64,7 +65,7 @@
                 <th class="column-title">Điện thoại </th>
                 <th class="column-title">Email </th>
                 <th class="column-title">Ngày sinh </th>
-                <th class="column-title no-link last" style="width: 7%;" style="text-align: center;">
+                <th *ngIf="_authenService.hasPermission('USER','update') || _authenService.hasPermission('USER','delete')" class="column-title no-link last" style="width: 7%;" style="text-align: center;">
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
                 <th class="bulk-actions" colspan="7">
@@ -89,9 +90,11 @@
                 <td class=" ">{{user.PhoneNumber}}</td>
                 <td class=" ">{{user.Email}}</td>
                 <td class=" ">{{user.BirthDay | date: 'dd/MM/yyyy'}}</td>
-                <td class="last" style="width: 7%;" style="text-align: center;">
-                  <button class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
-                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button>
+                <td *ngIf="_authenService.hasPermission('USER','update') || _authenService.hasPermission('USER','delete')" class="last" style="width: 7%;" style="text-align: center;">
+                  <button *ngIf="_authenService.hasPermission('USER','update')" class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button *ngIf="_authenService.hasPermission('USER','delete')" class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button>
+                  <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button> -->
                 </td>
               </tr>
             </tbody>
@@ -210,6 +213,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [texts]="myTexts" [settings]="mySettings" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown>
+              <!-- <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown> -->
             </div>
           </div>
           <div class="ln_solid"></div>
