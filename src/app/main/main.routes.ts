@@ -14,7 +14,8 @@ export const mainRoutes: Routes = [
             //localhost:4200/main/role
             { path: 'role', loadChildren: './role/role.module#RoleModule' },
             //localhost:4200/main/function
-            { path: 'function', loadChildren: './function/function.module#FunctionModule' }
+            { path: 'function', loadChildren: './function/function.module#FunctionModule' },
+            { path: 'product-category', loadChildren: './product-category/product-category.module#ProductCategoryModule' }
         ]
     }
 ];
