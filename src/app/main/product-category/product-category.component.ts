@@ -47,7 +47,7 @@ export class ProductCategoryComponent implements OnInit {
   }
   //Show add form
   public showAdd() {
-    this.entity = {};
+    this.entity = { Status: true };
     this.addEditModal.show();
   }
   //Show edit form

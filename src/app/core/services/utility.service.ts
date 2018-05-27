@@ -85,4 +85,21 @@ export class UtilityService {
 
     return slug;
   }
+
+  ConvertStringCommaToArray(input: string): any[] {
+    let output: string[] = null;
+    if (input != null)
+      output = input.split(",");
+    return output;
+  }
+
+  ConvertArrayToStringComma(input: string[]): string {
+    let output: string = "";
+    if (input != null) {
+      for (let i = 0; i < input.length; i++) {     
+        i == input.length - 1 ? output += input[i] : output += input[i] + ",";
+      }
+    }
+    return output;
+  }
 }

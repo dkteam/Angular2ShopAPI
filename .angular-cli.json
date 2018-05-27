@@ -27,6 +27,7 @@
         "../node_modules/alertifyjs/build/css/themes/default.css",
         "../node_modules/icheck/skins/flat/green.css",        
         "../node_modules/angular-tree-component/dist/angular-tree-component.css",
+        
         "../src/assets/css/custom.css",
         "styles.css"
       ],
@@ -38,7 +39,8 @@
         "../node_modules/alertifyjs/build/alertify.js",
         "../node_modules/icheck/icheck.min.js",
         "../src/assets/js/custom.js",
-        "../node_modules/moment/moment.js"
+        "../node_modules/moment/moment.js",
+        "../node_modules/jquery.tagsinput/src/jquery.tagsinput.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

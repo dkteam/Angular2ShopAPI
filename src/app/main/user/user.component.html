@@ -69,7 +69,7 @@
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
                 <th class="bulk-actions" colspan="7">
-                  <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions (
+                  <a class="antoo" style="color:#fff; font-weight:500;">Đã chọn (
                     <span class="action-cnt"> </span> )
                     <i class="fa fa-chevron-down"></i>
                   </a>
@@ -203,9 +203,9 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Giới tính</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
 
-              <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='True'" name="gender" [ngModel]="entity.Gender" value="True" required />              Nam
+              <input class="flat" type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='True'" name="gender" [ngModel]="entity.Gender" value="True" required />              Nam
 
-              <input type="radio" (change)="selectGender($event)"  #gender="ngModel" [checked]="entity.Gender=='False'" name="gender" [ngModel]="entity.Gender" value="False" />              Nữ
+              <input class="flat" type="radio" (change)="selectGender($event)"  #gender="ngModel" [checked]="entity.Gender=='False'" name="gender" [ngModel]="entity.Gender" value="False" />              Nữ
 
             </div>
           </div> 
