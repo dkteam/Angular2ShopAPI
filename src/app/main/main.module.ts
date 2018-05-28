@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { HomeModule } from './home/home.module';
 import { UtilityService } from '../core/services/utility.service';
 import { AuthenService } from '../core/services/authen.service';
+import { SignalrService } from '../core/services/signalr.service';
 import { SidebarMenuComponent } from '../shared/sidebar-menu/sidebar-menu.component';
 import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
 
@@ -17,7 +18,7 @@ import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
     HomeModule,
     RouterModule.forChild(mainRoutes)
   ],
-  providers: [UtilityService, AuthenService],
+  providers: [UtilityService, AuthenService, SignalrService],
   declarations: [MainComponent, SidebarMenuComponent, TopMenuComponent]
 })
 export class MainModule { }

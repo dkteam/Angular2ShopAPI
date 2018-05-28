@@ -5,3 +5,4 @@ interface NodeModule {
 }
 
 declare var moment: any;
+declare var $: any;
