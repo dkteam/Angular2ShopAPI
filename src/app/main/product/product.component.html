@@ -108,7 +108,7 @@
           <tbody>
             <tr *ngFor="let item of products" class="even pointer">
               <td class="a-center ">
-                <input type="checkbox" class="flat" name="table_records" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}">
+                <input type="checkbox" name="table_records" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}">
               </td>
               <td class=" ">{{item.Name}}</td>
               <td class=" ">

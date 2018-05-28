@@ -10,11 +10,6 @@ import { UploadService } from '../../core/services/upload.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { CKEditorComponent } from 'ng2-ckeditor';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-
-import { Observable } from 'rxjs/Observable';
-import { filter, map } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-product',
@@ -37,7 +32,9 @@ export class ProductComponent implements OnInit {
   public products: any[];
   public productCategories: any[];
 
-  public inputTags: string[] = [];
+  public inputTags: any[];
+
+  public checkedItems: any[];
 
   constructor(public _authenService: AuthenService,
     private _dataService: DataService,
@@ -69,11 +66,13 @@ export class ProductComponent implements OnInit {
   }
   //Show add form
   public showAdd() {
-    this.entity = { IncludedVAT: false, Content: '', Status: true };
+    this.entity = {};
+    this.entity = { Content: '', Status: true };
     this.addEditModal.show();
   }
   //Show edit form
   public showEdit(id: string) {
+    this.entity = {};
     this._dataService.get('/api/product/detail/' + id).subscribe((response: any) => {
       this.entity = response;
       this.inputTags = this._utilityService.ConvertStringCommaToArray(response.Tags);
@@ -139,7 +138,9 @@ export class ProductComponent implements OnInit {
   }
 
   public onTagAdded(e: any) {
-    this.inputTags.push(e.value);
+    if (this.inputTags == null)
+      this.inputTags[0] = "Không có gì";
+    this.inputTags.push(e.display);
     this.entity.Tags = this._utilityService.ConvertArrayToStringComma(this.inputTags);
   }
 
@@ -149,5 +150,20 @@ export class ProductComponent implements OnInit {
       this.inputTags.splice(index, 1);
     }
     this.entity.Tags = this._utilityService.ConvertArrayToStringComma(this.inputTags);
+  }
+
+
+  public deleteMulti() {
+    this.checkedItems = this.products.filter(x => x.Checked);
+    var checkedIds = [];
+    for (var i = 0; i < this.checkedItems.length; ++i)
+      checkedIds.push(this.checkedItems[i]["ID"]);
+
+    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this._dataService.del('/api/product/deletemulti', 'checkedProducts', JSON.stringify(checkedIds)).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
+        this.search();
+      }, error => this._dataService.handleError(error));
+    });
   }
 }
