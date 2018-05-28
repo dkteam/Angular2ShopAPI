@@ -32,7 +32,7 @@ export class ProductComponent implements OnInit {
   public products: any[];
   public productCategories: any[];
 
-  public inputTags: any[];
+  public inputTags: any[] = [];
 
   public checkedItems: any[];
 
@@ -138,8 +138,6 @@ export class ProductComponent implements OnInit {
   }
 
   public onTagAdded(e: any) {
-    if (this.inputTags == null)
-      this.inputTags[0] = "Không có gì";
     this.inputTags.push(e.display);
     this.entity.Tags = this._utilityService.ConvertArrayToStringComma(this.inputTags);
   }
