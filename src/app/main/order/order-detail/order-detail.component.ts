@@ -33,8 +33,12 @@ export class OrderDetailComponent implements OnInit {
       this.loadOrder(this.orderId);
       this.loadOrderDetail(this.orderId);
     });
-
   }
+
+  public goBack() {
+    this.utilityService.navigate('/main/order/index');
+  }
+
   public loadOrder(id: number) {
     this._dataService.get('/api/order/detail/' + id.toString()).subscribe((response: any) => {
       this.entity = response;
