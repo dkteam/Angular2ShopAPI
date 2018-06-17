@@ -9,7 +9,7 @@ import { UtilityService } from './../../core/services/utility.service';
 import { UploadService } from './../../core/services/upload.service';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
-import { CKEditorComponent } from 'ng2-ckeditor';
+//import { CKEditorComponent } from 'ng2-ckeditor';
 //import { SimpleTinyComponent } from '../../shared/simple-tiny/simple-tiny.component';
 import { CKEditorModule } from 'ngx-ckeditor';
 import { TagInputModule } from 'ngx-chips';
@@ -29,7 +29,7 @@ import { TagInputModule } from 'ngx-chips';
     //BrowserAnimationsModule,
     ReactiveFormsModule
   ],
-  declarations: [PostComponent, CKEditorComponent],
+  declarations: [PostComponent],
   providers: [DataService, UtilityService, UploadService]
 })
 export class PostModule { }
