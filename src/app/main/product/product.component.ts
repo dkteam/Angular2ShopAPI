@@ -55,7 +55,8 @@ export class ProductComponent implements OnInit {
     private _dataService: DataService,
     private _notificationService: NotificationService,
     private _utilityService: UtilityService,
-    private _uploadService: UploadService) {
+    private _uploadService: UploadService
+  ) {
 
   }
 

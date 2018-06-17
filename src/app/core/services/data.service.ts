@@ -87,4 +87,23 @@ export class DataService {
       return Observable.throw(errMsg);
     }
   }
+
+  public handleErrorUploadFile(error: any) {
+    if (error.status == 401) {
+      localStorage.removeItem(SystemConstants.CURRENT_USER);
+      this._notificationService.printErrorMessage(MessageConstants.LOGIN_AGAIN_MSG);
+      this._utilityService.navigateToLogin();
+    }
+    else if (error.status == 403) {
+      localStorage.removeItem(SystemConstants.CURRENT_USER);
+      this._notificationService.printErrorMessage(MessageConstants.FORBIDDEN);
+      this._utilityService.navigateToLogin();
+    }
+    else {
+      let errMsg = JSON.parse(error._body).error;
+      this._notificationService.printErrorMessage(errMsg);
+
+      return Observable.throw(errMsg);
+    }
+  }
 }

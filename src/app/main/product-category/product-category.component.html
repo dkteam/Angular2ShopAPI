@@ -8,7 +8,7 @@
       <div class="input-group">
         <input type="text" name="filter" [(ngModel)]="filter" (keyup.enter)="search()" class="form-control" placeholder="Tìm kiếm...">
         <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Tìm!</button>
+          <button class="btn btn-default" type="button">Tìm!</button>
         </span>
       </div>
     </div>
@@ -23,7 +23,7 @@
 
   <div class="x_panel">
     <div class="x_title">
-      <button class="btn btn-success" title="Thêm chức năng" (click)="showAdd()">Thêm mới</button>
+      <button class="btn btn-success" data-toggle="tooltip" title="Thêm chức năng" (click)="showAdd()">Thêm mới</button>
       <ul class="nav navbar-right panel_toolbox">
         <li>
           <a class="collapse-link">
@@ -56,8 +56,12 @@
       <tree-root #treeProductCategory [nodes]="_productCategoryHierachy">
         <ng-template #treeNodeTemplate let-node let-index="index">
           <span>{{ node.data.Name }}</span>
-          <button class="btn btn-xs btn-primary" (click)="showEdit(node.data.ID)"> <i class="fa fa-pencil-square-o"  aria-hidden="true"></i></button>
-          <button class="btn btn-xs btn-danger" (click)="delete(node.data.ID)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <button class="btn btn-xs btn-primary" data-toggle="tooltip" title="Chỉnh sửa danh mục này" (click)="showEdit(node.data.ID)">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-xs btn-danger" data-toggle="tooltip" title="Xóa danh mục này" (click)="delete(node.data.ID)">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
         </ng-template>
       </tree-root>
     </div>
@@ -69,7 +73,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Thêm mới / Chỉnh sửa</h4>
+        <h4 class="modal-title pull-left">{{modalTitle}}: Danh mục sản phẩm</h4>
         <button type="button" class="close pull-right" (click)="addEditModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -81,19 +85,21 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-              <input type="text" #name="ngModel" (keypress)="createAlias()" [(ngModel)]="entity.Name" required minlength="3" name="name" class="form-control" />
-              <small [hidden]="name.valid || (name.pristine && !addEditForm.submitted)" class="text-danger">
-                Bạn phải nhập tên ít nhất 3 ký tự
-              </small>
+              <input type="text" #name="ngModel" (keyup)="createAlias()" [(ngModel)]="entity.Name" required maxlength="256" name="name"
+                class="form-control" />
+              <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
+                Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
+              </div>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Alias</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #alias="ngModel" [(ngModel)]="entity.Alias" required minlength="3" name="alias" class="form-control" />
-              <small [hidden]="alias.valid || (alias.pristine && !addEditForm.submitted)" class="text-danger">
-                Bạn phải nhập alias
-              </small>
+              <input type="text" #alias="ngModel" [(ngModel)]="entity.Alias" required maxlength="256" name="alias" class="form-control"
+              />
+              <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
+                Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
+              </div>
             </div>
           </div>
 
@@ -106,27 +112,20 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" required name="displayOrder" class="form-control"
-              />
-              <small [hidden]="displayOrder.valid || (displayOrder.pristine && !addEditForm.submitted)" class="text-danger">
-                Bạn phải nhập thứ tự
-              </small>
+              <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự trang chủ</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="number" #homeOrder="ngModel" [(ngModel)]="entity.HomeOrder" required name="homeOrder" class="form-control" />
-              <small [hidden]="homeOrder.valid || (displayOrder.pristine && !addEditForm.submitted)" class="text-danger">
-                Bạn phải nhập thứ tự
-              </small>
+              <input type="number" #homeOrder="ngModel" [(ngModel)]="entity.HomeOrder" name="homeOrder" class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #image name="image" class="form-control">
-              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
+              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
               <input type="hidden" [(ngModel)]="entity.Image" name="image" />
             </div>
 
@@ -135,31 +134,27 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Chức năng cha</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <select class="form-control" name="parentId" [(ngModel)]="entity.ParentID">
-                 <option value="">--Chọn chức năng cha--</option>
-                  <option *ngFor="let x of _productCategories" [value]="x.ID">{{x.Name}}</option>
-                </select>
+                <option value="">--Chọn danh mục cha--</option>
+                <option *ngFor="let x of _productCategoriesForDropDownList" [value]="x.ID">{{x.Name}}</option>
+              </select>
               <input type="hidden" [(ngModel)]="entity.ParentID" name="parentId" class="form-control" />
             </div>
           </div>
 
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Từ khóa</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Từ khóa SEO</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" #metaKeyword="ngModel" [(ngModel)]="entity.MetaKeyword" name="keyword" class="form-control" />
-
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả SEO</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" required minlength="3" name="metaDescription"
-                class="form-control" />
-              <small [hidden]="metaDescription.valid || (metaDescription.pristine && !addEditForm.submitted)" class="text-danger">
-                Bạn phải nhập tên ít nhất 3 ký tự
-              </small>
+              <input type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" name="metaDescription" class="form-control"
+              />
             </div>
           </div>
           <div class="form-group">
@@ -167,22 +162,35 @@
             <div class="col-md-9 col-sm-9 col-xs-12">
               <div class="checkbox">
                 <label>
-                   <input type="checkbox" class="flat" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
+                  <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                   <input type="checkbox" class="flat" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
+                  <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
                 </label>
               </div>
             </div>
           </div>
           <div class="ln_solid"></div>
           <div class="form-group">
-            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+            <div class="col-md-9 col-sm-9 col-xs-12 pull-right">
+              <small class="pull-left">
+                <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
+                <br/>
+                <span style="color: #42A948">Màu xanh:</span> Hợp lệ
+                <br/>
+                <span style="color: #f0ad4e">Màu vàng:</span> Thông báo
+                <br/>
+                <span>Không màu:</span> Không bắt buộc nhập
+              </small>
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="!addEditForm.form.valid">Cập nhật</button>
+              <button type="button" (click)="addEditModal.hide()" class="btn btn-default pull-right">Hủy bỏ</button>
+            </div>
+            <!-- <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
               <button type="button" (click)="addEditModal.hide()" class="btn btn-primary">Hủy bỏ</button>
               <button type="submit" class="btn btn-success" [disabled]="!addEditForm.form.valid">Cập nhật</button>
-            </div>
+            </div> -->
           </div>
 
         </form>

@@ -83,9 +83,9 @@
                   <input type="checkbox" class="flat" name="table_records">
                 </td>
                 <td class=" " style="width: 7%;">
-                  <img [src]="baseFolder + user.Avatar" class="img-responsive" style="width: 100%;" />
+                  <a [routerLink]="" (click)="showEditModal(user.Id)"><img [src]="baseFolder + user.Avatar" class="img-responsive" style="width: 100%;" /></a>
                 </td>
-                <td class=" ">{{user.UserName}}</td>
+                <td class=" ">{{user.UserName}}</td>                
                 <td class=" ">{{user.FullName}}</td>
                 <td class=" ">{{user.PhoneNumber}}</td>
                 <td class=" ">{{user.Email}}</td>
@@ -125,19 +125,19 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.Id" name="id" />
-              <input type="text" #fullname="ngModel" [(ngModel)]="entity.FullName" required minlength="3" name="fullname" class="form-control" />
-              <small [hidden]="fullname.valid || (fullname.pristine && !frmAddEdit.submitted)" class="text-danger">
-                Bạn phải nhập ít nhất 3 ký tự
-              </small>
+              <input type="text" #fullname="ngModel" [(ngModel)]="entity.FullName" required minlength="2" maxlength="256" name="fullname" class="form-control" />
+              <div *ngIf="fullname.errors && (fullname.dirty || fullname.touched)" class="label label-danger">
+                Dữ liệu này không được để trống và độ dài tối thiểu 2, tối đa 256 ký tự
+              </div>
             </div>
           </div> 
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tài khoản </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên tài khoản </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #username="ngModel" required [(ngModel)]="entity.UserName" name="username" class="form-control" />
-              <small [hidden]="username.valid || (username.pristine && !frmAddEdit.submitted)" class="text-danger">
-                Bạn phải nhập tên tài khoản
-              </small>
+              <input type="text" #username="ngModel" required [(ngModel)]="entity.UserName" maxlength="256" name="username" class="form-control" />
+              <div *ngIf="username.errors && (username.dirty || username.touched)" class="label label-danger">
+                Dữ liệu này không được để trống và độ dài tối đa 256 ký tự, không dấu, không khoảng trắng
+              </div>
             </div>
           </div>     
           <div class="form-group" *ngIf="!entity.Id">
@@ -193,7 +193,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #avatar name="avatar" class="form-control">
               <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
-              <input type="hidden" [(ngModel)]="entity.Avatar" name="avatarUrl" />
+              <input type="hidden" [(ngModel)]="entity.Avatar" name="brandLogoUrl" />
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Avatar">
               <img [src]="baseFolder + entity.Avatar" width="128" />

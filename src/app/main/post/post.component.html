@@ -1,7 +1,7 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>Sản phẩm
-      <small>Danh sách sản phẩm</small>
+    <h3>Bài viết
+      <small>Danh sách bài viết</small>
     </h3>
   </div>
   <div class="title_right">
@@ -49,9 +49,9 @@
   <div class="x_panel">
     <div class="x_title">
       <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-        title="Hãy chọn sản phẩm muốn xóa bên dưới, sau đó click nút này để xóa sản phẩm đã chọn." (click)="deleteMulti()">Xóa nhiều SP</button>
+        title="Hãy chọn bài viết muốn xóa bên dưới, sau đó click nút này để xóa bài viết đã chọn." (click)="deleteMulti()">Xóa</button>
       <button *ngIf="_authenService.hasPermission('PRODUCT','create')" data-toggle="tooltip" type="button" class="btn btn-primary"
-        title="Thêm sản phẩm" (click)="showAdd()">Thêm sản phẩm</button>
+        title="Thêm bài viết" (click)="showAdd()">Thêm bài viết</button>
       <ul class="nav navbar-right panel_toolbox">
         <li>
           <a class="collapse-link">
@@ -87,14 +87,13 @@
               <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th>
-              <th class="column-title">Tên sản phẩm</th>
               <th class="column-title">Hình ảnh</th>
+              <th class="column-title">Tiêu đề</th>
               <th class="column-title">Danh mục</th>
-              <th class="column-title">Giá bán</th>
-              <th class="column-title">Ngày tạo</th>
-              <th class="column-title">Người tạo</th>
+              <th class="column-title">Mô tả ngắn</th>
+              <th class="column-title">Ngày viết</th>
               <th class="column-title">Trạng thái</th>
-              <th *ngIf="_authenService.hasPermission('PRODUCT','update') || _authenService.hasPermission('PRODUCT','delete')" class="column-title no-link last">
+              <th *ngIf="_authenService.hasPermission('POST','update') || _authenService.hasPermission('POST','delete')" class="column-title no-link last">
                 <span class="nobr">Sửa/Xóa</span>
               </th>
               <th class="bulk-actions" colspan="9">
@@ -106,35 +105,28 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of products" class="even pointer">
+            <tr *ngFor="let item of posts" class="even pointer">
               <td class="a-center ">
                 <input type="checkbox" name="table_records" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}">
               </td>
-              <td class=" ">{{item.Name}}</td>
               <td class=" ">
-                <a [routerLink]="" (click)="showEdit(item.ID)"><img width="128" class="img-responsive" [src]="baseFolder + item.ThumbnailImage" /></a>
+                <a [routerLink]="" (click)="showEdit(item.ID)"><img width="128" class="img-responsive" [src]="baseFolder + item.Image" /></a>
               </td>
-              <td class=" ">{{item.ProductCategory.Name}}</td>
-              <td class=" ">{{item.PromotionPrice}}</td>
+              <td class=" ">
+                <a [routerLink]="" (click)="showEdit(item.ID)" style="font-weight: bold; font-style: italic">{{item.Name}}</a>
+              </td>
+              <td class=" ">{{item.PostCategory.Name}}</td>
+              <td class=" ">{{item.Description}}</td>
               <td class=" ">{{item.CreatedDate | date}}</td>
-              <td class=" ">{{item.CreatedBy}}</td>
               <td class=" ">
                 <span class="label label-success"> {{item.Status}} </span>
               </td>
-              <td *ngIf="_authenService.hasPermission('PRODUCT','update') || _authenService.hasPermission('PRODUCT','delete')" class="last">
-                <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Quản lý ảnh" *ngIf="_authenService.hasPermission('PRODUCT','update')"
-                  (click)="showImageManage(item.ID)">
-                  <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                </button>
-                <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Quản lý số lượng" *ngIf="_authenService.hasPermission('PRODUCT','update')"
-                  (click)="showQuantityManage(item.ID)">
-                  <i class="fa fa-bandcamp" aria-hidden="true"></i>
-                </button>
-                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Cập nhật sản phẩm" *ngIf="_authenService.hasPermission('PRODUCT','update')"
+              <td *ngIf="_authenService.hasPermission('POST','update') || _authenService.hasPermission('POST','delete')" class="last">
+                <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Cập nhật sản phẩm" *ngIf="_authenService.hasPermission('POST','update')"
                   (click)="showEdit(item.ID)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa sản phẩm" *ngIf="_authenService.hasPermission('PRODUCT','delete')"
+                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa sản phẩm" *ngIf="_authenService.hasPermission('POST','delete')"
                   (click)="delete(item.ID)">
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
@@ -153,7 +145,7 @@
       </div>      -->
       <div *ngIf="products && products.length == 0" class="col-md-12">
         <div class="alert alert-info">
-          <strong>Thông báo!</strong> Hiện tại chưa có sản phẩm nào trong hệ thống
+          <strong>Thông báo!</strong> Hiện tại chưa có bài viết nào trong hệ thống
         </div>
 
       </div>
@@ -172,7 +164,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Thêm mới / Chỉnh sửa</h4>
+        <h4 class="modal-title pull-left">{{modalTitle}}: Bài viết</h4>
         <button type="button" class="close pull-right" (click)="addEditModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -192,77 +184,47 @@
             <div id="basic" class="tab-pane fade in active">
               <!-- <h3>Thông tin cơ bản</h3> -->
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-                  <input type="text" #name="ngModel" (keyup)="createAlias()" [(ngModel)]="entity.Name" required minlength="3" name="name" class="form-control"
-                  />
-                  <small [hidden]="name.valid || (name.pristine && !addEditForm.submitted)" class="text-danger">
-                    Bạn phải nhập tên ít nhất 3 ký tự
-                  </small>
+                  <input type="text" #name="ngModel" (keyup)="createAlias()" [(ngModel)]="entity.Name" required maxlength="256" name="name" class="form-control" />
+                  <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
+                    Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
+                  </div>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Alias</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề SEO</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <input type="text" #alias="ngModel" [(ngModel)]="entity.Alias" required minlength="3" name="alias" class="form-control" />
-                  <small [hidden]="alias.valid || (alias.pristine && !addEditForm.submitted)" class="text-danger">
-                    Bạn phải nhập alias
-                  </small>
+                  <div *ngIf="alias.errors && (alias.dirty || alias.touched)" class="label label-danger">
+                    Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
+                  </div>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" name="categoryID" [(ngModel)]="entity.CategoryID">
+                  <select class="form-control" #categoryId required name="categoryID" [(ngModel)]="entity.CategoryID">
                     <option value="">--Chọn danh mục--</option>
-                    <option *ngFor="let x of productCategories" [value]="x.ID">{{x.Name}}</option>
+                    <option *ngFor="let x of postCategories" [value]="x.ID">{{x.Name}}</option>
                   </select>
                   <input type="hidden" [(ngModel)]="entity.CategoryID" name="categoryID" class="form-control" />
+                  <!-- <div *ngIf="categoryID.errors && (categoryID.dirty || categoryID.touched)" class="label label-danger">
+                    Hãy chọn một danh mục cho bài viết
+                  </div> -->
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="file" #thumbnailImage name="thumbnailImage" class="form-control">
-                  <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
-                  <input type="hidden" [(ngModel)]="entity.ThumbnailImage" name="thumbnailImage" />
+                  <input type="file" #image name="image" class="form-control">
+                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
+                  <input type="hidden" [(ngModel)]="entity.Image" name="image" />
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.ThumbnailImage">
-                  <img [src]="baseFolder + entity.ThumbnailImage" width="128" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá bán</label>
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="number" #price="ngModel" [(ngModel)]="entity.Price" required name="price" class="form-control" />
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" class="flat" [(ngModel)]="entity.IncludedVAT" name="includedVAT" #includedVAT="ngModel" /> Bao gồm VAT
-                    </label>
-                  </div>
-                  <small [hidden]="price.valid || (price.pristine && !addEditForm.submitted)" class="text-danger">
-                    Bạn phải nhập giá bán
-                  </small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá nhập</label>
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="number" #originalPrice="ngModel" [(ngModel)]="entity.OriginalPrice" required name="originalPrice" class="form-control"
-                  />
-                  <small [hidden]="originalPrice.valid || (originalPrice.pristine && !addEditForm.submitted)" class="text-danger">
-                    Bạn phải nhập giá nhập
-                  </small>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá KM</label>
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="number" #promotionPrice="ngModel" [(ngModel)]="entity.PromotionPrice" name="promotionPrice" class="form-control"
-                  />
+                <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
+                  <img [src]="baseFolder + entity.Image" width="128" />
                 </div>
               </div>
               <div class="form-group">
@@ -270,17 +232,17 @@
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="flat" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
+                      <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="flat" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
+                      <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" class="flat" [(ngModel)]="entity.HotFlag" name="hotFlag" #status="ngModel"> Sản phẩm nổi bật
+                      <input type="checkbox" [(ngModel)]="entity.HotFlag" name="hotFlag" #status="ngModel"> Sản phẩm nổi bật
                     </label>
                   </div>
                 </div>
@@ -292,12 +254,6 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Bảo hành (tháng)</label>
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="number" #warranty="ngModel" [(ngModel)]="entity.Warranty" name="warranty" class="form-control" />
                 </div>
               </div>
               <div class="form-group">

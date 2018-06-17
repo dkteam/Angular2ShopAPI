@@ -15,10 +15,12 @@ export class ProductCategoryComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild(TreeComponent) private treeProductCategory: TreeComponent;
   public filter: string = '';
-  public entity: any;
+  public entity: any = {};
   public functionId: string;
   public _productCategoryHierachy: any[];
   public _productCategories: any[];
+  public _productCategoriesForDropDownList: any[];
+  public modalTitle: string='';
 
   constructor(private _dataService: DataService,
     private notificationService: NotificationService,
@@ -26,7 +28,6 @@ export class ProductCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.search();
-    this.getListForDropdown();
   }
   public createAlias() {
     this.entity.Alias = this.utilityService.MakeSeoTitle(this.entity.Name);
@@ -42,17 +43,21 @@ export class ProductCategoryComponent implements OnInit {
   public getListForDropdown() {
     this._dataService.get('/api/productCategory/getallhierachy')
       .subscribe((response: any[]) => {
-        this._productCategories = response;
+        this._productCategoriesForDropDownList = response;
       }, error => this._dataService.handleError(error));
   }
   //Show add form
   public showAdd() {
     this.entity = { Status: true };
+    this.modalTitle = 'Thêm';
+    this.getListForDropdown();
     this.addEditModal.show();
   }
   //Show edit form
   public showEdit(id: string) {
     this._dataService.get('/api/productCategory/detail/' + id).subscribe((response: any) => {
+      this.getListForDropdown();
+      this.modalTitle = 'Chỉnh sửa';
       this.entity = response;
       this.addEditModal.show();
     }, error => this._dataService.handleError(error));

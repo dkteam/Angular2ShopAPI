@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TreeModule, TreeComponent } from 'angular-tree-component';
+import { TreeModule,TreeModel, TreeComponent } from 'angular-tree-component';
 
 import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -15,7 +15,7 @@ import { MessageConstants } from '../../core/common/message.constants';
 export class FunctionComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild('permissionModal') public permissionModal: ModalDirective;
-  @ViewChild(TreeComponent) private treeFunction: TreeComponent;
+  @ViewChild('treeFunction') treeFunction;
   public _functionHierachy: any[];
   public _functions: any[];
 
@@ -31,6 +31,11 @@ export class FunctionComponent implements OnInit {
 
   ngOnInit() {
     this.search();
+    // this.tree.treeModel.expandAll();
+  }
+
+  ngAfterViewInit() {
+    this.treeFunction.treeModel.expandAll();
   }
 
   public showPermission(id: any) {

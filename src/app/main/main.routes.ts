@@ -20,11 +20,19 @@ export const mainRoutes: Routes = [
             
             { path: 'product', loadChildren: './product/product.module#ProductModule' },
 
+            { path: 'post', loadChildren: './post/post.module#PostModule' },
+
             { path: 'order', loadChildren: './order/order.module#OrderModule' },
 
             { path: 'announcement', loadChildren: './announcement/announcement.module#AnnouncementModule' },
 
-            { path: 'report', loadChildren: './report/report.module#ReportModule' }
+            { path: 'report', loadChildren: './report/report.module#ReportModule' },
+
+            { path: 'brand', loadChildren: './brand/brand.module#BrandModule' },
+
+            { path: 'origin', loadChildren: './origin/origin.module#OriginModule' },
+
+            { path: 'post-category', loadChildren: './post-category/post-category.module#PostCategoryModule' }
         ]
     }
 ];
