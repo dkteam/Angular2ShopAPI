@@ -1,18 +1,18 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>Danh mục
-      <small>Danh mục các bài viết</small>
+    <h3>Cấu hình
+      <small>Danh sách các thiết lập</small>
     </h3>
   </div>
 
   <div class="title_right">
     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-      <!-- <div class="input-group">
-        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên danh mục cần tìm...">
+      <div class="input-group">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ...">
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" (click)="loadData()">Tìm kiếm!</button>
         </span>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>
@@ -21,9 +21,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-          title="Hãy chọn danh mục muốn xóa bên dưới, sau đó click nút này để xóa danh mục đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa </button>
-        <button class="btn btn-success" data-toggle="tooltip" title="Thêm một danh mục mới" (click)="showAddEditModal()">Thêm danh mục</button>
+        <button class="btn btn-success" data-toggle="tooltip" title="Thêm page" (click)="showAddEditModal()">Thêm Cấu hình</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -62,10 +60,10 @@
                   <input type="checkbox" id="check-all" class="flat">
                 </th> -->
                 <th class="column-title"># </th>
-                <th class="column-title">Tên danh mục </th>
+                <th class="column-title">Code </th>
                 <th class="column-title">Mô tả </th>
-                <th class="column-title">Thứ tự hiển thị </th>
-                <th class="column-title">Trạng thái </th>
+                <th class="column-title">Dữ liệu dạng chuỗi </th>
+                <th class="column-title">Dữ liệu dạng số </th>
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
@@ -77,31 +75,24 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
-              <tr class="even pointer" *ngFor="let postCategory of postCategories">
-                <td class="a-center ">
-                  <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="postCategory.Checked" [name]="postCategory.ID" [ngModelOptions]="{standalone: true}">
-                </td>
+              <tr class="even pointer" *ngFor="let systemConfig of systemConfigs; let i = index">
+                <!-- <td class="a-center ">
+                  <input type="checkbox" name="table_records">
+                </td> -->
+                <td class=" ">{{i + 1}}</td>
                 <td class=" ">
-                  <a [routerLink]="" (click)="showEditModal(postCategory.ID)">{{postCategory.Name}}</a>
+                  <code>{{systemConfig.Code}}</code>
                 </td>
-                <td class=" ">{{postCategory.Description}}</td>
-                <td class=" ">{{postCategory.DisplayOrder}}</td>
-                <td *ngIf="postCategory.Status==true">
-                  <span>
-                    <label class="label label-success">Kích hoạt </label>
-                  </span>
-                </td>
-                <td *ngIf="postCategory.Status==false">
-                  <span>
-                    <label class="label label-danger">Đã khóa </label>
-                  </span>
-                </td>
+                <td class=" ">{{systemConfig.Description}}</td>
+                <td class=" ">{{systemConfig.ValueString}}</td>
+                <td class=" ">{{systemConfig.ValueInt}}</td>
                 <td class="last" style="text-align: center;">
-                  <button *ngIf="postCategory.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(postCategory.ID)">
+                  <button *ngIf="systemConfig.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(systemConfig.ID)">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button *ngIf="postCategory.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(postCategory.ID)">
+                  <button *ngIf="systemConfig.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(systemConfig.ID)">
                     <i class="fa fa-trash"></i>
                   </button>
                   <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
@@ -110,6 +101,10 @@
               </tr>
             </tbody>
           </table>
+          <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+              [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -121,7 +116,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Danh mục bài viết</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Cấu hình</h4>
         <button type="button" class="close pull-right" (click)="modalAddEdit.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -129,56 +124,38 @@
       <div class="modal-body">
         <form class="form-horizontal form-label-left" novalidate #frmAddEdit="ngForm" (ngSubmit)="saveChanged(frmAddEdit)" *ngIf="entity">
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên danh mục </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Code </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required maxlength="256" name="name"
+              <input type="text" [readonly]="entity.Code" #code="ngModel" [(ngModel)]="entity.Code" required maxlength="50" name="code"
                 class="form-control" />
-              <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
-                Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
+              <div *ngIf="code.errors && (code.dirty || code.touched)" class="label label-danger">
+                Bắt buộc nhập và tối đa 50 ký tự
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề SEO </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả ngắn </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #alias="ngModel" required maxlength="256" [(ngModel)]="entity.Alias" name="alias" class="form-control"
-              />
-              <div *ngIf="alias.errors && (alias.dirty || alias.touched)" class="label label-danger">
-                Dữ liệu này được sinh ra tự động khi gõ tên thương hiệu, không khoảng trắng và tối đa 256 ký tự
+              <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" maxlength="500" name="description" class="form-control"></textarea>
+              <div *ngIf="description.errors && (description.dirty || description.touched)" class="label label-danger">
+                Tối đa 500 ký tự
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dữ liệu dạng chuỗi </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <select class="form-control" name="parentId" [(ngModel)]="entity.ParentID">
-                <option value="">--Chọn danh mục cha--</option>
-                <option *ngFor="let x of postCategories" [value]="x.ID">{{x.Name}}</option>
-              </select>
-              <input type="hidden" [(ngModel)]="entity.ParentID" name="parentId" class="form-control" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
-                </label>
+              <textarea type="text" #valueString="ngModel" [(ngModel)]="entity.ValueString" maxlength="500" name="valueString" class="form-control"></textarea>
+              <div *ngIf="valueString.errors && (valueString.dirty || valueString.touched)" class="label label-danger">
+                Tối đa 500 ký tự
               </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dữ liệu dạng số </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="number" #valueInt="ngModel" [(ngModel)]="entity.valueInt" name="valueInt" class="form-control" />
             </div>
           </div>
           <div class="ln_solid"></div>

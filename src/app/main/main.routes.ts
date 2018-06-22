@@ -32,7 +32,13 @@ export const mainRoutes: Routes = [
 
             { path: 'origin', loadChildren: './origin/origin.module#OriginModule' },
 
-            { path: 'post-category', loadChildren: './post-category/post-category.module#PostCategoryModule' }
+            { path: 'post-category', loadChildren: './post-category/post-category.module#PostCategoryModule' },
+
+            { path: 'slide', loadChildren: './slide/slide.module#SlideModule' },
+
+            { path: 'page', loadChildren: './page/page.module#PageModule' },
+
+            { path: 'system-config', loadChildren: './system-config/system-config.module#SystemConfigModule' }
         ]
     }
 ];

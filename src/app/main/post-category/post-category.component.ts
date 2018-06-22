@@ -19,6 +19,8 @@ export class PostCategoryComponent implements OnInit {
   public postCategories: any[];
   public entity: any={};
   public modalTitle: string='';
+  public checkedItems: any[];
+  public deleteButtonFlag: boolean = true;
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
@@ -97,6 +99,25 @@ export class PostCategoryComponent implements OnInit {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.loadData();
       });
+  }
+
+  
+  public deleteMulti() {
+    this.checkedItems = this.postCategories.filter(x => x.Checked);
+    var checkedIds = [];
+    for (var i = 0; i < this.checkedItems.length; ++i)
+      checkedIds.push(this.checkedItems[i]["ID"]);
+
+    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this._dataService.del('/api/postcategory/deletemulti', 'checkedPostCategories', JSON.stringify(checkedIds)).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
+        this.loadData();
+      }, error => this._dataService.handleError(error));
+    });
+  }
+
+  public enableDeleteButton() {    
+    this.postCategories.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 
   public createAlias() {

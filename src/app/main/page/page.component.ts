@@ -11,50 +11,47 @@ import { UtilityService } from '../../core/services/utility.service';
 import { AuthenService } from '../../core/services/authen.service';
 
 @Component({
-  selector: 'app-origin',
-  templateUrl: './origin.component.html',
-  styleUrls: ['./origin.component.css']
+  selector: 'app-page',
+  templateUrl: './page.component.html',
+  styleUrls: ['./page.component.css']
 })
-export class OriginComponent implements OnInit {
+export class PageComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
+  @ViewChild('slide') slide;
   public pageIndex: number = 1;
   public pageSize: number = 10;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
-  public origins: any[];
+  public pages: any[];
   public entity: any;
-  public modalTitle: string = '';
-  public deleteButtonFlag: boolean = true;
-  public checkedItems: any[];
+  public modalTitle: string='';
+  public baseFolder: string = SystemConstants.BASE_API;
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
     private _uploadService: UploadService,
     private _utilityService: UtilityService,
     public _authenService: AuthenService
-  ) {
-    if (_authenService.checkAccess('USER') == false) {
-      _utilityService.navigateToLogin();
-    }
-  }
+  ) { }
+
 
   ngOnInit() {
     this.loadData();
   }
 
   loadData() {
-    this._dataService.get('/api/origin/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
+    this._dataService.get('/api/page/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((respone: any) => {
-        this.origins = respone.Items;
+        this.pages = respone.Items;
         this.pageIndex = respone.PageIndex;
         this.pageSize = respone.PageSize;
         this.totalRow = respone.TotalRows;
       });
   }
 
-  loadOrigin(id: any) {
-    this._dataService.get('/api/origin/detail/' + id)
+  loadSlide(id: any) {
+    this._dataService.get('/api/page/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
       });
@@ -66,32 +63,34 @@ export class OriginComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = {};
+    this.entity = {Status: true};
     this.modalTitle = "Thêm";
     this.modalAddEdit.show();
   }
 
   showEditModal(id: any) {
-    this.loadOrigin(id);
+    this.loadSlide(id);
     this.modalTitle = "Chỉnh sửa";
     this.modalAddEdit.show();
   }
 
-  saveChanged(valid: boolean) {
-    if (valid) {
+  saveChanged(form: NgForm) {
+    if (form) {
       if (this.entity.ID == undefined) {
-        this._dataService.post('/api/origin/add', JSON.stringify(this.entity))
+        this._dataService.post('/api/page/add', JSON.stringify(this.entity))
           .subscribe((respone: any) => {
             this.loadData();
             this.modalAddEdit.hide();
+            form.resetForm();
             this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
           }, error => this._dataService.handleError(error));
       }
       else {
-        this._dataService.put('/api/origin/update', JSON.stringify(this.entity))
+        this._dataService.put('/api/page/update', JSON.stringify(this.entity))
           .subscribe((respone: any) => {
             this.loadData();
             this.modalAddEdit.hide();
+            form.resetForm();
             this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
           }, error => this._dataService.handleError(error));
       }
@@ -105,29 +104,11 @@ export class OriginComponent implements OnInit {
   }
 
   deleteItemConfirm(id: any) {
-    this._dataService.del('/api/origin/delete', 'id', id)
+    this._dataService.del('/api/page/delete', 'id', id)
       .subscribe((respone: Response) => {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.loadData();
       });
-  }
-
-  public deleteMulti() {
-    this.checkedItems = this.origins.filter(x => x.Checked);
-    var checkedIds = [];
-    for (var i = 0; i < this.checkedItems.length; ++i)
-      checkedIds.push(this.checkedItems[i]["ID"]);
-
-    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
-      this._dataService.del('/api/origin/deletemulti', 'checkedOrigins', JSON.stringify(checkedIds)).subscribe((response: any) => {
-        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
-        this.loadData();
-      }, error => this._dataService.handleError(error));
-    });
-  }
-
-  public enableDeleteButton() {    
-    this.origins.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 
   public createAlias() {

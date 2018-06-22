@@ -34,9 +34,9 @@ export class FunctionComponent implements OnInit {
     // this.tree.treeModel.expandAll();
   }
 
-  ngAfterViewInit() {
-    this.treeFunction.treeModel.expandAll();
-  }
+  // ngAfterViewInit() {
+  //   this.treeFunction.treeModel.expandAll();
+  // }
 
   public showPermission(id: any) {
     this._dataService.get('/api/appRole/getAllPermission?functionId=' + id).subscribe((response: any[]) => {

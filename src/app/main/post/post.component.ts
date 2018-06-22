@@ -22,7 +22,7 @@ export class PostComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild("image") image;
 
-  /*Product manage */
+  /*Post manage */
   public baseFolder: string = SystemConstants.BASE_API;
   public entity: any;
   public totalRow: number;
@@ -33,12 +33,12 @@ export class PostComponent implements OnInit {
   public filterCategoryID: number;
   public posts: any[];
   public postCategories: any[];
-  public modalTitle: string='';
+  public modalTitle: string = '';
   public inputTags: any = [];;
-
+  public deleteButtonFlag: boolean = true;
   public checkedItems: any[];
 
-  /*Product Image*/
+  /*Post Image*/
   public imageEntity: any = {};
   public productImages: any = [];
   @ViewChild('imageManageModal') public imageManageModal: ModalDirective;
@@ -78,12 +78,13 @@ export class PostComponent implements OnInit {
   //Show add form
   public showAdd() {
     this.entity = { Content: '', Status: true };
+    this.inputTags = [];
     this.modalTitle = "Thêm";
     this.addEditModal.show();
   }
 
-   //Show edit form
-   public showEdit(id: string) {
+  //Show edit form
+  public showEdit(id: string) {
     this.modalTitle = "Chỉnh sửa";
     this._dataService.get('/api/post/detail/' + id).subscribe((response: any) => {
       this.entity = response;
@@ -150,6 +151,9 @@ export class PostComponent implements OnInit {
   }
 
   public onTagAdded(e: any) {
+    if (this.inputTags == null) {
+      this.inputTags = [];
+    }
     this.inputTags.push(e.display);
     this.entity.Tags = this._utilityService.ConvertArrayToStringComma(this.inputTags);
   }
@@ -160,7 +164,7 @@ export class PostComponent implements OnInit {
       this.inputTags.splice(index, 1);
     }
     this.entity.Tags = this._utilityService.ConvertArrayToStringComma(this.inputTags);
-  }  
+  }
 
   public deleteMulti() {
     this.checkedItems = this.posts.filter(x => x.Checked);
@@ -169,10 +173,14 @@ export class PostComponent implements OnInit {
       checkedIds.push(this.checkedItems[i]["ID"]);
 
     this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
-      this._dataService.del('/api/post/deletemulti', 'checkedProducts', JSON.stringify(checkedIds)).subscribe((response: any) => {
+      this._dataService.del('/api/post/deletemulti', 'checkedPosts', JSON.stringify(checkedIds)).subscribe((response: any) => {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.search();
       }, error => this._dataService.handleError(error));
     });
+  }
+
+  public enableDeleteButton() {    
+    this.posts.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 }

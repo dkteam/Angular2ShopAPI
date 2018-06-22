@@ -6,18 +6,14 @@
         <a>
           <i class="fa fa-home"></i> Trang chủ</a>
       </li>
-      <li *ngFor="let item of functions">
-        <a>
-          <i class="fa {{item.IconCss}}"></i> {{item.Name}}
-          <span *ngIf="item.ChildFunctions.length>0" class="fa fa-chevron-down"></span>
-        </a>
-        <ul class="nav child_menu">
-          <li *ngFor="let subItem of item.ChildFunctions">
-            <a routerLink="{{subItem.URL}}" routerLinkActive="active">{{subItem.Name}}</a>
-          </li>
+      <li *ngFor="let item of functions" routerLinkActive="active">
+        <a><i class="fa {{item.IconCss}}"></i> {{item.Name}}<span *ngIf="item.ChildFunctions.length>0" class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">          
+          <li *ngFor="let subItem of item.ChildFunctions"><a routerLink="{{subItem.URL}}">{{subItem.Name}}</a></li>
+          <!-- <li *ngFor="let subItem of item.ChildFunctions"  routerLinkActive="active"><a routerLink="{{subItem.URL}}">{{subItem.Name}}</a></li> -->
         </ul>
       </li>
-      <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+      <!-- <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
             <li><a href="#level1_1">Level One</a>
             <li><a>Level One<span class="fa fa-chevron-down"></span></a>
@@ -33,7 +29,7 @@
             <li><a href="#level1_2">Level One</a>
             </li>
         </ul>
-      </li>   
+      </li>    -->
     </ul>
   </div>
   <!-- <div class="menu_section">
@@ -125,5 +121,4 @@
         </li>
     </ul>
   </div> -->
-
 </div>

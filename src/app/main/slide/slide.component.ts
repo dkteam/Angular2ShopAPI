@@ -11,24 +11,22 @@ import { UtilityService } from '../../core/services/utility.service';
 import { AuthenService } from '../../core/services/authen.service';
 
 @Component({
-  selector: 'app-brand',
-  templateUrl: './brand.component.html',
-  styleUrls: ['./brand.component.css']
+  selector: 'app-slide',
+  templateUrl: './slide.component.html',
+  styleUrls: ['./slide.component.css']
 })
-export class BrandComponent implements OnInit {
+export class SlideComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
-  @ViewChild('brandlogo') brandlogo;
+  @ViewChild('slide') slide;
   public pageIndex: number = 1;
   public pageSize: number = 10;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
-  public brands: any[];
+  public slides: any[];
   public entity: any;
-  public modalTitle: string = '';
+  public modalTitle: string='';
   public baseFolder: string = SystemConstants.BASE_API;
-  public deleteButtonFlag: boolean = true;
-  public checkedItems: any[];
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
@@ -46,17 +44,17 @@ export class BrandComponent implements OnInit {
   }
 
   loadData() {
-    this._dataService.get('/api/brand/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
+    this._dataService.get('/api/slide/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((respone: any) => {
-        this.brands = respone.Items;
+        this.slides = respone.Items;
         this.pageIndex = respone.PageIndex;
         this.pageSize = respone.PageSize;
         this.totalRow = respone.TotalRows;
       });
   }
-
-  loadBrand(id: any) {
-    this._dataService.get('/api/brand/detail/' + id)
+  
+  loadSlide(id: any) {
+    this._dataService.get('/api/slide/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
       });
@@ -68,13 +66,13 @@ export class BrandComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = {};
+    this.entity = {Status: true};
     this.modalTitle = "Thêm";
     this.modalAddEdit.show();
   }
 
   showEditModal(id: any) {
-    this.loadBrand(id);
+    this.loadSlide(id);
     this.modalTitle = "Chỉnh sửa";
     this.modalAddEdit.show();
   }
@@ -82,10 +80,10 @@ export class BrandComponent implements OnInit {
   saveChanged(form: NgForm) {
     if (form) {
       //this.entity.Roles = this.myRoles;
-      let fi = this.brandlogo.nativeElement;
+      let fi = this.slide.nativeElement;
 
       if (fi.files.length > 0) {
-        this._uploadService.postWithFile('/api/upload/saveImage?type=brand', null, fi.files).then((imageUrl: string) => {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=slide', null, fi.files).then((imageUrl: string) => {
           this.entity.Image = imageUrl;
         }).then(() => {
           this.saveData(form);
@@ -99,7 +97,7 @@ export class BrandComponent implements OnInit {
 
   private saveData(form: NgForm) {
     if (this.entity.ID == undefined) {
-      this._dataService.post('/api/brand/add', JSON.stringify(this.entity))
+      this._dataService.post('/api/slide/add', JSON.stringify(this.entity))
         .subscribe((respone: any) => {
           this.loadData();
           this.modalAddEdit.hide();
@@ -108,7 +106,7 @@ export class BrandComponent implements OnInit {
         }, error => this._dataService.handleError(error));
     }
     else {
-      this._dataService.put('/api/brand/update', JSON.stringify(this.entity))
+      this._dataService.put('/api/slide/update', JSON.stringify(this.entity))
         .subscribe((respone: any) => {
           this.loadData();
           this.modalAddEdit.hide();
@@ -125,33 +123,10 @@ export class BrandComponent implements OnInit {
   }
 
   deleteItemConfirm(id: any) {
-    this._dataService.del('/api/brand/delete', 'id', id)
+    this._dataService.del('/api/slide/delete', 'id', id)
       .subscribe((respone: Response) => {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.loadData();
       });
-  }
-
-  public createAlias() {
-    this.entity.Alias = this._utilityService.MakeSeoTitle(this.entity.Name);
-  }
-
-  
-  public deleteMulti() {
-    this.checkedItems = this.brands.filter(x => x.Checked);
-    var checkedIds = [];
-    for (var i = 0; i < this.checkedItems.length; ++i)
-      checkedIds.push(this.checkedItems[i]["ID"]);
-
-    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
-      this._dataService.del('/api/brand/deletemulti', 'checkedBrands', JSON.stringify(checkedIds)).subscribe((response: any) => {
-        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
-        this.loadData();
-      }, error => this._dataService.handleError(error));
-    });
-  }
-
-  public enableDeleteButton() {    
-    this.brands.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 }

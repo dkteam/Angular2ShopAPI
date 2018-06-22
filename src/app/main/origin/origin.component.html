@@ -21,6 +21,9 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
+        <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
+          title="Hãy chọn xuất xứ muốn xóa bên dưới, sau đó click nút này để xóa xuất xứ đã chọn." [disabled]="deleteButtonFlag"
+          (click)="deleteMulti()">Xóa</button>
         <button class="btn btn-success" data-toggle="tooltip" title="Thêm quốc gia sản xuất sản phẩm mà doanh nghiệp có kinh doanh"
           (click)="showAddEditModal()">Thêm xuất xứ</button>
         <ul class="nav navbar-right panel_toolbox">
@@ -57,9 +60,10 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                <th>
-                  <input type="checkbox" id="check-all" class="flat">
-                </th>
+                <!-- <th>
+                <input type="checkbox" id="check-all" class="flat">
+              </th> -->
+                <th class="column-title"># </th>
                 <th class="column-title">Tên quốc gia </th>
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
@@ -76,9 +80,11 @@
             <tbody>
               <tr class="even pointer" *ngFor="let origin of origins">
                 <td class="a-center ">
-                  <input type="checkbox" name="table_records">
+                    <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="origin.Checked" [name]="origin.ID" [ngModelOptions]="{standalone: true}">
                 </td>
-                <td class=" "><a [routerLink]="" (click)="showEditModal(origin.ID)">{{origin.Name}}</a></td>
+                <td class=" ">
+                  <a [routerLink]="" (click)="showEditModal(origin.ID)">{{origin.Name}}</a>
+                </td>
                 <td class="last" style="text-align: center;">
                   <button *ngIf="origin.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(origin.ID)">
                     <i class="fa fa-pencil-square-o"></i>
@@ -107,7 +113,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Thêm/Sửa xuất xứ</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Xuất xứ</h4>
         <button type="button" class="close pull-right" (click)="modalAddEdit.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -118,7 +124,8 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên quốc gia </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required minlength="2" name="name" class="form-control" />
+              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required minlength="2" name="name" class="form-control"
+              />
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
                 Dữ liệu này không được để trống và độ dài tối thiểu 2 ký tự
               </div>

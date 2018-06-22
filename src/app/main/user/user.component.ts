@@ -29,7 +29,7 @@ export class UserComponent implements OnInit {
   public filter: string = '';
   public users: any[];
   public entity: any;
-  public baseFolder: string = SystemConstants.BASE_API;
+  public baseFolder: string = SystemConstants.BASE_API; 
 
   public allRoles: IMultiSelectOption[] = [];
   public roles: any[];
@@ -121,7 +121,7 @@ export class UserComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = {};
+    this.entity = { Status: true };
     this.modalAddEdit.show();
   }
 

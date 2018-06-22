@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { UploadService } from '../../core/services/upload.service';
+import { UserFilterByUserName } from '../../core/pipes/dkteam.pipes';
 
 const userRoutes: Routes = [
   //localhost:4200/main/user
@@ -28,6 +29,6 @@ const userRoutes: Routes = [
     RouterModule.forChild(userRoutes)
   ],
   providers: [DataService, NotificationService, UploadService],
-  declarations: [UserComponent]
+  declarations: [UserComponent,UserFilterByUserName]
 })
 export class UserModule { }

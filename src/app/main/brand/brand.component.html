@@ -21,7 +21,9 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button class="btn btn-success" data-toggle="tooltip" title="Thêm thương hiệu" (click)="showAddEditModal()">Thêm thương hiệu</button>
+          <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
+          title="Hãy chọn thương hiệu muốn xóa bên dưới, sau đó click nút này để xóa các thương hiệu đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa</button>
+        <button class="btn btn-primary" data-toggle="tooltip" title="Thêm thương hiệu" (click)="showAddEditModal()">Thêm thương hiệu</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -56,9 +58,10 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                <th>
-                  <input type="checkbox" id="check-all" class="flat">
-                </th>               
+                 <!-- <th>
+                <input type="checkbox" id="check-all" class="flat">
+              </th> -->
+              <th class="column-title"># </th>             
                 <th class="column-title">Logo </th>
                 <th class="column-title">Tên thương hiệu </th>
                 <th class="column-title">Mô tả </th>
@@ -78,7 +81,8 @@
             <tbody>
               <tr class="even pointer" *ngFor="let brand of brands">
                 <td class="a-center ">
-                  <input type="checkbox" name="table_records">
+                  <!-- <input type="checkbox" name="table_records"> -->
+                  <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="brand.Checked" [name]="brand.ID" [ngModelOptions]="{standalone: true}">
                 </td>          
                 <td class=" " style="width: 7%;">
                   <a [routerLink]="" (click)="showEditModal(brand.ID)"><img [src]="baseFolder + brand.Image" class="img-responsive" style="width: 100%;"/></a>
@@ -114,7 +118,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Thêm/Sửa thương hiệu</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Thương hiệu</h4>
         <button type="button" class="close pull-right" (click)="modalAddEdit.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -151,7 +155,6 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
-
             </div>
           </div>
           <div class="form-group">

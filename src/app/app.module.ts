@@ -10,12 +10,12 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 //import { CKEditorModule } from 'ng2-ckeditor';
 import { CKEditorModule } from 'ngx-ckeditor';
-
-
+import { NgProgressModule,NgProgressBrowserXhr } from 'ngx-progressbar';
+import { BrowserXhr } from '@angular/http';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -24,9 +24,12 @@ import { CKEditorModule } from 'ngx-ckeditor';
     RouterModule.forRoot(appRoutes),
     PaginationModule.forRoot(),
     CKEditorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgProgressModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, 
+    {provide: BrowserXhr, useClass: NgProgressBrowserXhr}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

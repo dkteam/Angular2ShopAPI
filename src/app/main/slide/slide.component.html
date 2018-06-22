@@ -1,18 +1,18 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>Danh mục
-      <small>Danh mục các bài viết</small>
+    <h3>SLIDE
+      <small>Danh sách slide</small>
     </h3>
   </div>
 
   <div class="title_right">
     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-      <!-- <div class="input-group">
-        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên danh mục cần tìm...">
+      <div class="input-group">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên slide cần tìm...">
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" (click)="loadData()">Tìm kiếm!</button>
         </span>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>
@@ -21,9 +21,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-          title="Hãy chọn danh mục muốn xóa bên dưới, sau đó click nút này để xóa danh mục đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa </button>
-        <button class="btn btn-success" data-toggle="tooltip" title="Thêm một danh mục mới" (click)="showAddEditModal()">Thêm danh mục</button>
+        <button class="btn btn-success" data-toggle="tooltip" title="Thêm slide" (click)="showAddEditModal()">Thêm slide</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -58,13 +56,15 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                <!-- <th>
+                <th>
                   <input type="checkbox" id="check-all" class="flat">
-                </th> -->
-                <th class="column-title"># </th>
-                <th class="column-title">Tên danh mục </th>
+                </th>
+                <th class="column-title">Hình ảnh </th>
+                <th class="column-title">Tên slide </th>
                 <th class="column-title">Mô tả </th>
+                <th class="column-title">URL </th>
                 <th class="column-title">Thứ tự hiển thị </th>
+                <th class="column-title">Banner? </th>
                 <th class="column-title">Trạng thái </th>
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
@@ -77,31 +77,39 @@
                 </th>
               </tr>
             </thead>
+
             <tbody>
-              <tr class="even pointer" *ngFor="let postCategory of postCategories">
+              <tr class="even pointer" *ngFor="let slide of slides">
                 <td class="a-center ">
-                  <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="postCategory.Checked" [name]="postCategory.ID" [ngModelOptions]="{standalone: true}">
+                  <input type="checkbox" name="table_records">
                 </td>
-                <td class=" ">
-                  <a [routerLink]="" (click)="showEditModal(postCategory.ID)">{{postCategory.Name}}</a>
+                <td class=" " style="width: 7%;">
+                  <a [routerLink]="" (click)="showEditModal(slide.ID)">
+                    <img [src]="baseFolder + slide.Image" class="img-responsive" style="width: 100%;" />
+                  </a>
                 </td>
-                <td class=" ">{{postCategory.Description}}</td>
-                <td class=" ">{{postCategory.DisplayOrder}}</td>
-                <td *ngIf="postCategory.Status==true">
-                  <span>
-                    <label class="label label-success">Kích hoạt </label>
-                  </span>
+                <td class=" ">{{slide.Name}}</td>
+                <td class=" ">{{slide.Description}}</td>
+                <td class=" ">{{slide.Url}}</td>
+                <td class=" ">{{slide.DisplayOrder}}</td>
+                <!-- <td class=" ">{{slide.SubSlide}}</td> -->
+                <td *ngIf="slide.SubSlide==true">
+                  <span><label class="label label-primary">Banner </label></span>
                 </td>
-                <td *ngIf="postCategory.Status==false">
-                  <span>
-                    <label class="label label-danger">Đã khóa </label>
-                  </span>
+                <td *ngIf="slide.SubSlide==false">
+                  <span><label class="label label-dark">Slide </label></span>
+                </td>
+                <td *ngIf="slide.Status==true">
+                  <span><label class="label label-success">Kích hoạt </label></span>
+                </td>
+                <td *ngIf="slide.Status==false">
+                  <span><label class="label label-danger">Đã khóa </label></span>
                 </td>
                 <td class="last" style="text-align: center;">
-                  <button *ngIf="postCategory.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(postCategory.ID)">
+                  <button *ngIf="slide.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(slide.ID)">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button *ngIf="postCategory.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(postCategory.ID)">
+                  <button *ngIf="slide.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(slide.ID)">
                     <i class="fa fa-trash"></i>
                   </button>
                   <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
@@ -110,6 +118,10 @@
               </tr>
             </tbody>
           </table>
+          <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+              [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -121,7 +133,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Danh mục bài viết</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Slide</h4>
         <button type="button" class="close pull-right" (click)="modalAddEdit.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -129,23 +141,12 @@
       <div class="modal-body">
         <form class="form-horizontal form-label-left" novalidate #frmAddEdit="ngForm" (ngSubmit)="saveChanged(frmAddEdit)" *ngIf="entity">
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên danh mục </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên slide </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required maxlength="256" name="name"
-                class="form-control" />
+              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" required maxlength="256" name="name" class="form-control" />
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
-                Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề SEO </label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #alias="ngModel" required maxlength="256" [(ngModel)]="entity.Alias" name="alias" class="form-control"
-              />
-              <div *ngIf="alias.errors && (alias.dirty || alias.touched)" class="label label-danger">
-                Dữ liệu này được sinh ra tự động khi gõ tên thương hiệu, không khoảng trắng và tối đa 256 ký tự
+                Bắt buộc nhập và tối đa 256 ký tự
               </div>
             </div>
           </div>
@@ -162,13 +163,17 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <select class="form-control" name="parentId" [(ngModel)]="entity.ParentID">
-                <option value="">--Chọn danh mục cha--</option>
-                <option *ngFor="let x of postCategories" [value]="x.ID">{{x.Name}}</option>
-              </select>
-              <input type="hidden" [(ngModel)]="entity.ParentID" name="parentId" class="form-control" />
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="file" #slide name="slide1" class="form-control ng-valid">
+              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
+              <input type="hidden" [(ngModel)]="entity.Image" name="avatarUrl" />
+              <div *ngIf="slide.errors && (slide.dirty || slide.touched)" class="label label-danger">
+                Bắt buộc nhập và tối đa 50 ký tự
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
+              <img [src]="baseFolder + entity.Image" width="128" />
             </div>
           </div>
           <div class="form-group">
@@ -179,19 +184,35 @@
                   <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                 </label>
               </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.SubSlide" name="homeFlag" #status="ngModel"> Banner
+                </label>
+              </div>
+              <!-- <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.HotFlag" name="hotFlag" #status="ngModel"> Bài viết nổi bật
+                </label>
+              </div> -->
             </div>
           </div>
+          <!-- <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung slide</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <ck-editor name="detail" [(ngModel)]="entity.Content" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
+            </div>
+          </div> -->
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">
               <small class="pull-left">
                 <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
-                <br/>
+                <br/>                
                 <span style="color: #42A948">Màu xanh:</span> Hợp lệ
                 <br/>
                 <span>Không màu:</span> Không bắt buộc nhập
               </small>
-              <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>              
               <button type="button" (click)="modalAddEdit.hide()" class="btn btn-default pull-right">Hủy bỏ</button>
             </div>
           </div>
