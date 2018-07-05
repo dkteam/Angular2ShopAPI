@@ -11,44 +11,38 @@ import { UtilityService } from '../../core/services/utility.service';
 import { AuthenService } from '../../core/services/authen.service';
 
 @Component({
-  selector: 'app-brand',
-  templateUrl: './brand.component.html',
-  styleUrls: ['./brand.component.css']
+  selector: 'app-support-online',
+  templateUrl: './support-online.component.html',
+  styleUrls: ['./support-online.component.css']
 })
-export class BrandComponent implements OnInit {
+export class SupportOnlineComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
-  @ViewChild('brandlogo') brandlogo;
+  @ViewChild('logo') logo;
   public pageIndex: number = 1;
   public pageSize: number = 10;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
-  public brands: any[];
+  public supportOnlines: any[];
   public entity: any;
   public modalTitle: string = '';
   public baseFolder: string = SystemConstants.BASE_API;
-  public deleteButtonFlag: boolean = true;
-  public checkedItems: any[];
 
   constructor(private _dataService: DataService,
     private _notificationService: NotificationService,
-    private _uploadService: UploadService,
     private _utilityService: UtilityService,
+    private _uploadService: UploadService,
     public _authenService: AuthenService
-  ) {
-    if (_authenService.checkAccess('USER') == false) {
-      _utilityService.navigateToLogin();
-    }
-  }
+  ) { }
 
   ngOnInit() {
     this.loadData();
   }
 
   loadData() {
-    this._dataService.get('/api/brand/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
+    this._dataService.get('/api/supportOnline/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
       .subscribe((respone: any) => {
-        this.brands = respone.Items;
+        this.supportOnlines = respone.Items;
         this.pageIndex = respone.PageIndex;
         this.pageSize = respone.PageSize;
         this.totalRow = respone.TotalRows;
@@ -56,7 +50,7 @@ export class BrandComponent implements OnInit {
   }
 
   loadBrand(id: any) {
-    this._dataService.get('/api/brand/detail/' + id)
+    this._dataService.get('/api/supportOnline/detail/' + id)
       .subscribe((respone: any) => {
         this.entity = respone;
       });
@@ -68,7 +62,7 @@ export class BrandComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = {Status: true};
+    this.entity = {};
     this.modalTitle = "Thêm";
     this.modalAddEdit.show();
   }
@@ -82,11 +76,11 @@ export class BrandComponent implements OnInit {
   saveChanged(form: NgForm) {
     if (form) {
       //this.entity.Roles = this.myRoles;
-      let fi = this.brandlogo.nativeElement;
+      let fi = this.logo.nativeElement;
 
       if (fi.files.length > 0) {
-        this._uploadService.postWithFile('/api/upload/saveImage?type=brand', null, fi.files).then((imageUrl: string) => {
-          this.entity.Image = imageUrl;
+        this._uploadService.postWithFile('/api/upload/saveImage?type=logo', null, fi.files).then((logoUrl: string) => {
+          this.entity.Logo = logoUrl;
         }).then(() => {
           this.saveData(form);
         });
@@ -99,7 +93,7 @@ export class BrandComponent implements OnInit {
 
   private saveData(form: NgForm) {
     if (this.entity.ID == undefined) {
-      this._dataService.post('/api/brand/add', JSON.stringify(this.entity))
+      this._dataService.post('/api/supportOnline/add', JSON.stringify(this.entity))
         .subscribe((respone: any) => {
           this.loadData();
           this.modalAddEdit.hide();
@@ -108,7 +102,7 @@ export class BrandComponent implements OnInit {
         }, error => this._dataService.handleError(error));
     }
     else {
-      this._dataService.put('/api/brand/update', JSON.stringify(this.entity))
+      this._dataService.put('/api/supportOnline/update', JSON.stringify(this.entity))
         .subscribe((respone: any) => {
           this.loadData();
           this.modalAddEdit.hide();
@@ -118,40 +112,4 @@ export class BrandComponent implements OnInit {
     }
   }
 
-  deleteItem(id: any) {
-    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
-      this.deleteItemConfirm(id)
-    });
-  }
-
-  deleteItemConfirm(id: any) {
-    this._dataService.del('/api/brand/delete', 'id', id)
-      .subscribe((respone: Response) => {
-        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
-        this.loadData();
-      });
-  }
-
-  public createAlias() {
-    this.entity.Alias = this._utilityService.MakeSeoTitle(this.entity.Name);
-  }
-
-  
-  public deleteMulti() {
-    this.checkedItems = this.brands.filter(x => x.Checked);
-    var checkedIds = [];
-    for (var i = 0; i < this.checkedItems.length; ++i)
-      checkedIds.push(this.checkedItems[i]["ID"]);
-
-    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
-      this._dataService.del('/api/brand/deletemulti', 'checkedBrands', JSON.stringify(checkedIds)).subscribe((response: any) => {
-        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
-        this.loadData();
-      }, error => this._dataService.handleError(error));
-    });
-  }
-
-  public enableDeleteButton() {    
-    this.brands.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
-  }
 }

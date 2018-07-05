@@ -154,11 +154,11 @@
             <td *ngIf="item.Status==true"><label class="label label-success">Hợp lệ</label></td>
             <td *ngIf="item.Status==false"><label class="label label-danger">Không hợp lệ</label></td>
             <td class="last" style="text-align: center;">
-                <a class="btn btn-primary" routerLink="/main/order/detail/{{item.ID}}" data-toggle="tooltip" title="Chi tiết hóa đơn"
+                <a class="btn btn-primary" routerLink="/main/order/detail/{{item.ID}}" data-toggle="tooltip" 
                 *ngIf="_authenService.hasPermission('ORDER','update')">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </a>
-              <button class="btn btn-danger" data-toggle="tooltip" title="Xóa hóa đơn" *ngIf="_authenService.hasPermission('ORDER','delete')"
+              <button class="btn btn-danger" data-toggle="tooltip" *ngIf="_authenService.hasPermission('ORDER','delete')"
                 (click)="delete(item.ID)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>

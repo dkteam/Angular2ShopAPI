@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { DataService } from '../../core/services/data.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TreeComponent } from 'angular-tree-component';
 import { MessageConstants } from '../../core/common/message.constants';
+import { UploadService } from '../../core/services/upload.service';
+import { SystemConstants } from '../../core/common/system.constants';
 
 @Component({
   selector: 'app-product-category',
@@ -13,6 +16,7 @@ import { MessageConstants } from '../../core/common/message.constants';
 })
 export class ProductCategoryComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
+  @ViewChild("image") image;
   @ViewChild(TreeComponent) private treeProductCategory: TreeComponent;
   public filter: string = '';
   public entity: any = {};
@@ -21,10 +25,13 @@ export class ProductCategoryComponent implements OnInit {
   public _productCategories: any[];
   public _productCategoriesForDropDownList: any[];
   public modalTitle: string='';
+  public baseFolder: string = SystemConstants.BASE_API;
 
   constructor(private _dataService: DataService,
     private notificationService: NotificationService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService,
+    private _uploadService: UploadService
+  ) { }
 
   ngOnInit() {
     this.search();
@@ -75,25 +82,60 @@ export class ProductCategoryComponent implements OnInit {
     this.notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => this.deleteConfirm(id));
   }
   //Save change for modal popup
-  public saveChanges(valid: boolean) {
-    if (valid) {
-      if (this.entity.ID == undefined) {
-        this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
-          this.search();
-          this.addEditModal.hide();
-          this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-        }, error => this._dataService.handleError(error));
+  // public saveChanges(valid: boolean) {
+  //   if (valid) {
+  //     if (this.entity.ID == undefined) {
+  //       this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //         this.search();
+  //         this.addEditModal.hide();
+  //         this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+  //       }, error => this._dataService.handleError(error));
+  //     }
+  //     else {
+  //       this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //         this.search();
+  //         this.addEditModal.hide();
+  //         this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+  //       }, error => this._dataService.handleError(error));
+
+  //     }
+  //   }
+
+  // }
+
+  //Save change for modal popup
+  public saveChanges(form: NgForm) {
+    if (form.valid) {
+      let fi = this.image.nativeElement;
+      if (fi.files.length > 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, fi.files).then((imageUrl: string) => {
+          this.entity.Image = imageUrl;
+        }).then(() => {
+          this.saveData(form);
+        });
       }
       else {
-        this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
-          this.search();
-          this.addEditModal.hide();
-          this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
-        }, error => this._dataService.handleError(error));
-
+        this.saveData(form);
       }
     }
-
+  }
+  private saveData(form) {
+    if (this.entity.ID == undefined) {
+      this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.search();
+        this.addEditModal.hide();
+        form.resetForm();
+        this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+      });
+    }
+    else {
+      this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.search();
+        this.addEditModal.hide();
+        form.resetForm();
+        this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+      }, error => this._dataService.handleError(error));
+    }
   }
 
   public onSelectedChange($event) {

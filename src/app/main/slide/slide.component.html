@@ -94,8 +94,9 @@
                 <td class=" ">{{slide.DisplayOrder}}</td>
                 <!-- <td class=" ">{{slide.SubSlide}}</td> -->
                 <td *ngIf="slide.SubSlide==true">
-                  <span><label class="label label-primary">Banner </label></span>
+                  <span><label class="label label-primary">SubSlide </label></span>
                 </td>
+                
                 <td *ngIf="slide.SubSlide==false">
                   <span><label class="label label-dark">Slide </label></span>
                 </td>
@@ -151,9 +152,21 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Text 1 </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
+              <input type="text" #text1="ngModel" [(ngModel)]="entity.Text1" maxlength="256" name="text1" class="form-control" />             
+            </div>
+            <div *ngIf="text1.errors && (text1.dirty || text1.touched)" class="label label-danger">
+              Tối đa 256 ký tự
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Text 2 </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" #text2="ngModel" [(ngModel)]="entity.Text2" maxlength="256" name="text2" class="form-control" />              
+            </div>
+            <div *ngIf="text2.errors && (text2.dirty || text2.touched)" class="label label-danger">
+              Tối đa 256 ký tự
             </div>
           </div>
           <div class="form-group">
@@ -166,7 +179,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #slide name="slide1" class="form-control ng-valid">
-              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
+              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước slide: 800 x 450 </p>
               <input type="hidden" [(ngModel)]="entity.Image" name="avatarUrl" />
               <div *ngIf="slide.errors && (slide.dirty || slide.touched)" class="label label-danger">
                 Bắt buộc nhập và tối đa 50 ký tự
@@ -186,14 +199,14 @@
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" [(ngModel)]="entity.SubSlide" name="homeFlag" #status="ngModel"> Banner
+                  <input type="checkbox" [(ngModel)]="entity.SubSlide" name="homeFlag" #status="ngModel"> SubSlide (360 x 220)
                 </label>
               </div>
-              <!-- <div class="checkbox">
+              <div class="checkbox">
                 <label>
-                  <input type="checkbox" [(ngModel)]="entity.HotFlag" name="hotFlag" #status="ngModel"> Bài viết nổi bật
+                  <input type="checkbox" [(ngModel)]="entity.Banner" name="banner" #status="ngModel"> Banner (670 x 195)
                 </label>
-              </div> -->
+              </div>
             </div>
           </div>
           <!-- <div class="form-group">

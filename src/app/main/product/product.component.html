@@ -292,8 +292,8 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="file" #thumbnailImage name="thumbnailImage" class="form-control">
-                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg </p>
-                  <input type="hidden" [(ngModel)]="entity.ThumbnailImage" name="thumbnailImage" />
+                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg, kích thước: 215 x 215 </p>
+                  <input type="hidden" [(ngModel)]="entity.ThumbnailImage" name="imageUrl" />
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.ThumbnailImage">
                   <img [src]="baseFolder + entity.ThumbnailImage" width="128" />
@@ -333,12 +333,12 @@
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
+                      <input type="checkbox" [(ngModel)]="entity.BestSeller" name="bestSeller" #status="ngModel"> Sản phẩm bán chạy
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" [(ngModel)]="entity.HotFlag" name="hotFlag" #status="ngModel"> Sản phẩm nổi bật
+                      <input type="checkbox" [(ngModel)]="entity.HotFlag" name="hotflag" #status="ngModel"> Sản phẩm Giá tốt
                     </label>
                   </div>
                 </div>

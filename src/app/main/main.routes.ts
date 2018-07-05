@@ -38,7 +38,13 @@ export const mainRoutes: Routes = [
 
             { path: 'page', loadChildren: './page/page.module#PageModule' },
 
-            { path: 'system-config', loadChildren: './system-config/system-config.module#SystemConfigModule' }
+            { path: 'system-config', loadChildren: './system-config/system-config.module#SystemConfigModule' },
+
+            { path: 'menu', loadChildren: './menu/menu.module#MenuModule' },
+
+            { path: 'support-online', loadChildren: './support-online/support-online.module#SupportOnlineModule' },
+
+            { path: 'price-request', loadChildren: './price-request/price-request.module#PriceRequestModule' }
         ]
     }
 ];

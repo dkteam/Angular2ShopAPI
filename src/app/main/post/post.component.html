@@ -225,7 +225,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="file" #image name="image" class="form-control">
-                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
+                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước 400 x 200 </p>
                   <input type="hidden" [(ngModel)]="entity.Image" name="image" />
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">

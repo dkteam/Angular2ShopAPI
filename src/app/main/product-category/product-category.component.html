@@ -79,7 +79,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal form-label-left input_mask" novalidate #addEditForm="ngForm" (ngSubmit)="saveChanges(addEditForm.valid)"
+        <form class="form-horizontal form-label-left input_mask" novalidate #addEditForm="ngForm" (ngSubmit)="saveChanges(addEditForm)"
           *ngIf="entity">
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên</label>
@@ -124,13 +124,13 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="file" #image name="image" class="form-control">
-              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg </p>
-              <input type="hidden" [(ngModel)]="entity.Image" name="image" />
+              <input type="file" #image name="image" class="form-control" [(ngModel)]="entity.Image">
+              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg và kích thước là: 196px x 70px </p>
+              <input type="hidden" [(ngModel)]="entity.Image" name="imageUrl" />
             </div>
 
             <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
-              <img [src]="entity.Image" width="128" />
+              <img [src]="baseFolder + entity.Image" width="128" />
             </div>
           </div>
           <div class="form-group">

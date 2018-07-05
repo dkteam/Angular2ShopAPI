@@ -1,4 +1,5 @@
 import { Component, AfterViewChecked, ElementRef } from '@angular/core';
+//import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,9 @@ import { Component, AfterViewChecked, ElementRef } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewChecked {
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef,
+    //public angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics
+  ) {
 
   }
   ngAfterViewChecked() {
@@ -14,5 +17,5 @@ export class AppComponent implements AfterViewChecked {
     s.type = "text/javascript";
     s.src = "../assets/js/custom.js";
     this.elementRef.nativeElement.appendChild(s);
-  }
+  } 
 }

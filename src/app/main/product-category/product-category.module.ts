@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap';
 import { DataService } from './../../core/services/data.service';
 import { UtilityService } from './../../core/services/utility.service';
+import { UploadService } from '../../core/services/upload.service';
+
 
 @NgModule({
   imports: [
@@ -18,6 +20,6 @@ import { UtilityService } from './../../core/services/utility.service';
     FormsModule
   ],
   declarations: [ProductCategoryComponent],
-  providers: [DataService, UtilityService]
+  providers: [DataService, UtilityService, UploadService]
 })
 export class ProductCategoryModule { }

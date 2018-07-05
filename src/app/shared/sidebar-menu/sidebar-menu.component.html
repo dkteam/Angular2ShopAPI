@@ -2,14 +2,20 @@
   <div class="menu_section">
     <h3>General</h3>
     <ul class="nav side-menu">
-      <li>
+      <!-- <li>
         <a>
-          <i class="fa fa-home"></i> Trang chủ</a>
-      </li>
+          <i class="fa fa-home"></i> Trang chủ
+        </a>
+      </li> -->
       <li *ngFor="let item of functions" routerLinkActive="active">
-        <a><i class="fa {{item.IconCss}}"></i> {{item.Name}}<span *ngIf="item.ChildFunctions.length>0" class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">          
-          <li *ngFor="let subItem of item.ChildFunctions"><a routerLink="{{subItem.URL}}">{{subItem.Name}}</a></li>
+        <a>
+          <i class="fa {{item.IconCss}}"></i> {{item.Name}}
+          <span *ngIf="item.ChildFunctions.length>0" class="fa fa-chevron-down"></span>
+        </a>
+        <ul class="nav child_menu">
+          <li *ngFor="let subItem of item.ChildFunctions">
+            <a routerLink="{{subItem.URL}}">{{subItem.Name}}</a>
+          </li>
           <!-- <li *ngFor="let subItem of item.ChildFunctions"  routerLinkActive="active"><a routerLink="{{subItem.URL}}">{{subItem.Name}}</a></li> -->
         </ul>
       </li>

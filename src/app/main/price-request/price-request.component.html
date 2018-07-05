@@ -1,0 +1,114 @@
+<div class="page-title">
+  <div class="title_left">
+    <h3>Yêu cầu báo giá
+      <small>Danh sách các yêu cầu báo giá từ khách hàng</small>
+    </h3>
+  </div>
+
+  <div class="title_right">
+    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+      <div class="input-group">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên khách hàng cần tìm...">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" (click)="loadData()">Tìm kiếm!</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
+          title="Hãy chọn xuất xứ muốn xóa bên dưới, sau đó click nút này để xóa xuất xứ đã chọn." [disabled]="deleteButtonFlag"
+          (click)="deleteMulti()">Xóa</button>
+        <ul class="nav navbar-right panel_toolbox">
+          <li>
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+          </li>
+          <li></li>
+          <!-- <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="#">Settings 1</a>
+              </li>
+              <li>
+                <a href="#">Settings 2</a>
+              </li>
+            </ul>
+          </li> -->
+          <li>
+            <a class="close-link">
+              <i class="fa fa-close"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content">
+        <div class="table-responsive">
+          <table class="table table-striped jambo_table bulk_action">
+            <thead>
+              <tr class="headings">
+                <!-- <th>
+                <input type="checkbox" id="check-all" class="flat">
+              </th> -->
+                <th class="column-title"># </th>
+                <th class="column-title">Tên khách hàng </th>
+                <th class="column-title">Số điện thoại </th>
+                <th class="column-title">Email </th>
+                <th class="column-title">Địa chỉ </th>
+                <th class="column-title">Ghi chú </th>
+                <th class="column-title">Ngày tạo </th>
+                <th class="column-title no-link last" style="text-align: center">
+                  <span class="nobr">Sửa/Xóa</span>
+                </th>
+                <th class="bulk-actions" colspan="7">
+                  <a class="antoo" style="color:#fff; font-weight:500;">Đã chọn (
+                    <span class="action-cnt"> </span> )
+                    <i class="fa fa-chevron-down"></i>
+                  </a>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr class="even pointer" *ngFor="let priceRequest of priceRequests">
+                <td class="a-center ">
+                    <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="priceRequest.Checked" [name]="priceRequest.ID" [ngModelOptions]="{standalone: true}">
+                </td>
+                <td class=" ">
+                  <a [routerLink]="" (click)="showEditModal(priceRequest.ID)">{{priceRequest.Name}}</a>
+                </td>
+                <td class=" ">{{priceRequest.Mobile}}</td>
+                <td class=" ">{{priceRequest.Email}}</td>
+                <td class=" ">{{priceRequest.Address}}</td>
+                <td class=" ">{{priceRequest.Content}}</td>
+                <td class=" ">{{priceRequest.CreatedDate}}</td>
+                <td class="last" style="text-align: center;">
+                  <button *ngIf="priceRequest.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(priceRequest.ID)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                  <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                  <button class="btn btn-danger" title="Xóa" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+              [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

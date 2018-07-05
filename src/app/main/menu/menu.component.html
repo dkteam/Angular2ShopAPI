@@ -1,14 +1,14 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>Thương hiệu
-      <small>Danh sách thương hiệu</small>
+    <h3>Menu
+      <small>Danh sách các Menu</small>
     </h3>
   </div>
 
   <div class="title_right">
     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
       <div class="input-group">
-        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên thương hiệu cần tìm...">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ menu cần tìm...">
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" (click)="loadData()">Tìm kiếm!</button>
         </span>
@@ -21,9 +21,8 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-          <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-          title="Hãy chọn thương hiệu muốn xóa bên dưới, sau đó click nút này để xóa các thương hiệu đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa</button>
-        <button class="btn btn-primary" data-toggle="tooltip" title="Thêm thương hiệu" (click)="showAddEditModal()">Thêm thương hiệu</button>
+        <button class="btn btn-success" data-toggle="tooltip" title="Thêm quốc gia sản xuất sản phẩm mà doanh nghiệp có kinh doanh"
+          (click)="showAddEditModal()">Thêm Menu</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -58,14 +57,15 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                 <!-- <th>
+                <!-- <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th> -->
-              <th class="column-title"># </th>             
-                <th class="column-title">Logo </th>
-                <th class="column-title">Tên thương hiệu </th>
-                <th class="column-title">Mô tả </th>
+                <th class="column-title">ID </th>
+                <th class="column-title">Tên menu </th>
+                <th class="column-title">URL </th>
                 <th class="column-title">Thứ tự hiển thị </th>
+                <th class="column-title">Menu cha </th>
+                <th class="column-title">Vị trí menu </th>
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
@@ -79,22 +79,23 @@
             </thead>
 
             <tbody>
-              <tr class="even pointer" *ngFor="let brand of brands">
-                <td class="a-center ">
-                  <!-- <input type="checkbox" name="table_records"> -->
-                  <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="brand.Checked" [name]="brand.ID" [ngModelOptions]="{standalone: true}">
-                </td>          
-                <td class=" " style="width: 7%;">
-                  <a [routerLink]="" (click)="showEditModal(brand.ID)"><img [src]="baseFolder + brand.Image" class="img-responsive" style="width: 100%;"/></a>
+              <tr class="even pointer" *ngFor="let menu of menus; let i = index">
+                <!-- <td class="a-center ">
+                    <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="menu.Checked" [name]="menu.ID" [ngModelOptions]="{standalone: true}">
+                </td> -->
+                <td class=" ">{{menu.ID}}</td>
+                <td class=" ">
+                  <a [routerLink]="" (click)="showEditModal(menu.ID)">{{menu.Name}}</a>
                 </td>
-                <td class=" ">{{brand.Name}}</td>
-                <td class=" ">{{brand.Description}}</td>
-                <td class=" ">{{brand.DisplayOrder}}</td>
+                <td class=" ">{{menu.URL}}</td>
+                <td class=" ">{{menu.DisplayOrder}}</td>
+                <td class=" ">{{menu.ParentID}}</td>
+                <td class=" ">{{menu.MenuGroup.Name}}</td>
                 <td class="last" style="text-align: center;">
-                  <button *ngIf="brand.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(brand.ID)">
+                  <button *ngIf="menu.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(menu.ID)">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button *ngIf="brand.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(brand.ID)">
+                  <button *ngIf="menu.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(menu.ID)">
                     <i class="fa fa-trash"></i>
                   </button>
                   <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
@@ -118,7 +119,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Thương hiệu</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{modalTitle}}: Menu</h4>
         <button type="button" class="close pull-right" (click)="modalAddEdit.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -126,46 +127,63 @@
       <div class="modal-body">
         <form class="form-horizontal form-label-left" novalidate #frmAddEdit="ngForm" (ngSubmit)="saveChanged(frmAddEdit)" *ngIf="entity">
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên thương hiệu </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên menu </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="hidden" [(ngModel)]="entity.Id" name="id" />
-              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required maxlength="50" name="name"
-                class="form-control" />
+              <input type="hidden" [(ngModel)]="entity.ID" name="id" />
+              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required minlength="2" name="name" class="form-control" />
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
-                Bắt buộc nhập và tối đa 50 ký tự
+                Dữ liệu này không được để trống và độ dài tối thiểu 2 ký tự
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề SEO </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">URL </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #alias="ngModel" required [(ngModel)]="entity.Alias" name="alias" class="form-control" />
-              <div *ngIf="alias.errors && (alias.dirty || alias.touched)" class="label label-danger">
+              <input type="text" #url="ngModel" required [(ngModel)]="entity.URL" name="url" class="form-control" />
+              <div *ngIf="url.errors && (url.dirty || url.touched)" class="label label-danger">
                 Dữ liệu này được sinh ra tự động khi gõ tên thương hiệu, không khoảng trắng và tối đa 50 ký tự
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả </label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự hiển thị </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Logo </label>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="file" #brandlogo name="avatar" class="form-control">
-              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước: 196 x 70 </p>
-              <input type="hidden" [(ngModel)]="entity.Image" name="avatarUrl" />
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <select class="form-control" #parentMenu name="parentMenu" [(ngModel)]="entity.ParentID">
+                <option value="">-- Chọn --</option>
+                <option *ngFor="let x of menusNonPaging" [value]="x.ID">{{x.Name}}</option>
+              </select>
+              <input type="hidden" [(ngModel)]="entity.ParentID" name="parentID" class="form-control" />
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
-              <img [src]="baseFolder + entity.Image" width="128" />
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Vị trí menu</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <select class="form-control" #menugroup required name="menugroup" [(ngModel)]="entity.GroupID">
+                <option value="">-- Chọn --</option>
+                <option *ngFor="let x of menuGroups" [value]="x.ID">{{x.Name}}</option>
+              </select>
+              <input type="hidden" [(ngModel)]="entity.GroupID" name="groupID" class="form-control" />           
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.Target" name="includedVAT" #includedVAT="ngModel" /> Mở tap mới
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
+                </label>
+              </div>
             </div>
           </div>
           <div class="ln_solid"></div>
@@ -175,15 +193,11 @@
                 <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
                 <br/>
                 <span style="color: #42A948">Màu xanh:</span> Hợp lệ
-                <br/>
-                <span style="color: #f0ad4e">Màu vàng:</span> Thông báo
-                <br/>
-                <span>Không màu:</span> Không bắt buộc nhập
               </small>
               <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>
               <button type="button" (click)="modalAddEdit.hide()" class="btn btn-default pull-right">Hủy bỏ</button>
             </div>
-          </div>
+          </div> 
         </form>
       </div>
     </div>
