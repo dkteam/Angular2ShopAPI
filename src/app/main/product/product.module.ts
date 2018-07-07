@@ -29,7 +29,7 @@ import { TagInputModule } from 'ngx-chips';
     //BrowserAnimationsModule,
     ReactiveFormsModule
   ],
-  declarations: [ProductComponent,CKEditorComponent],
+  declarations: [ProductComponent],
   providers: [DataService, UtilityService, UploadService]
 })
 export class ProductModule { }

@@ -148,13 +148,13 @@
         </ul>
         <div class="clearfix"></div>
       </div>      -->
-      <div *ngIf="products && products.length == 0" class="col-md-12">
+      <div *ngIf="posts && posts.length == 0" class="col-md-12">
         <div class="alert alert-info">
           <strong>Thông báo!</strong> Hiện tại chưa có bài viết nào trong hệ thống
         </div>
 
       </div>
-      <div *ngIf="products && products.length > 0" class="col-md-12">
+      <div *ngIf="posts && posts.length > 0" class="col-md-12">
         <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
           [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
       </div>

@@ -146,7 +146,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <textarea type="text" #valueString="ngModel" [(ngModel)]="entity.ValueString" maxlength="500" name="valueString" class="form-control"></textarea>
+              <textarea type="text" #valueString="ngModel" style="height: 200px;" [(ngModel)]="entity.ValueString" maxlength="500" name="valueString" class="form-control"></textarea>
               <div *ngIf="valueString.errors && (valueString.dirty || valueString.touched)" class="label label-danger">
                 Tối đa 500 ký tự
               </div>
