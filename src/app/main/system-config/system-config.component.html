@@ -21,7 +21,7 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <button class="btn btn-success" data-toggle="tooltip" title="Thêm page" (click)="showAddEditModal()">Thêm Cấu hình</button>
+        <!-- <button class="btn btn-success" data-toggle="tooltip" title="Thêm page" (click)="showAddEditModal()">Thêm Cấu hình</button> -->
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -62,8 +62,8 @@
                 <th class="column-title"># </th>
                 <th class="column-title">Code </th>
                 <th class="column-title">Mô tả </th>
-                <th class="column-title">Dữ liệu dạng chuỗi </th>
-                <th class="column-title">Dữ liệu dạng số </th>
+                <th class="column-title">Nội dung </th>
+                <!-- <th class="column-title">Dữ liệu dạng số </th> -->
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
@@ -87,14 +87,14 @@
                 </td>
                 <td class=" ">{{systemConfig.Description}}</td>
                 <td class=" ">{{systemConfig.ValueString}}</td>
-                <td class=" ">{{systemConfig.ValueInt}}</td>
+                <!-- <td class=" ">{{systemConfig.ValueInt}}</td> -->
                 <td class="last" style="text-align: center;">
                   <button *ngIf="systemConfig.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(systemConfig.ID)">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button *ngIf="systemConfig.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(systemConfig.ID)">
+                  <!-- <button *ngIf="systemConfig.Name != 'Admin'" class="btn btn-danger" data-toggle="tooltip" title="Xóa" (click)="deleteItem(systemConfig.ID)">
                     <i class="fa fa-trash"></i>
-                  </button>
+                  </button> -->
                   <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
                   <button class="btn btn-danger" title="Xóa" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button> -->
                 </td>
@@ -144,7 +144,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dữ liệu dạng chuỗi </label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <textarea type="text" #valueString="ngModel" [(ngModel)]="entity.ValueString" maxlength="500" name="valueString" class="form-control"></textarea>
               <div *ngIf="valueString.errors && (valueString.dirty || valueString.touched)" class="label label-danger">
@@ -152,12 +152,12 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Dữ liệu dạng số </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="number" #valueInt="ngModel" [(ngModel)]="entity.valueInt" name="valueInt" class="form-control" />
             </div>
-          </div>
+          </div> -->
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">

@@ -105,9 +105,9 @@
                   <button *ngIf="_authenService.hasPermission('USER','update')" class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)">
                     <i class="fa fa-pencil-square-o"></i>
                   </button>
-                  <button *ngIf="_authenService.hasPermission('USER','delete')" class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)">
+                  <!-- <button *ngIf="_authenService.hasPermission('USER','delete')" class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)">
                     <i class="fa fa-trash"></i>
-                  </button>
+                  </button> -->
                   <!-- <button class="btn btn-primary" title="Sửa" (click)="showEditModal(user.Id)"><i class="fa fa-pencil-square-o"></i></button>
                   <button class="btn btn-danger" title="Xóa" (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button> -->
                 </td>
@@ -239,14 +239,14 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [texts]="myTexts" [settings]="mySettings" [options]="allRoles"
                 [(ngModel)]="myRoles"></ss-multiselect-dropdown>
-              <!-- <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown> -->
+              <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown>
             </div>
-          </div>
+          </div> -->
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">

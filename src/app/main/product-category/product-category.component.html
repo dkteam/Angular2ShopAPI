@@ -59,9 +59,9 @@
           <button class="btn btn-xs btn-primary" data-toggle="tooltip" title="Chỉnh sửa danh mục này" (click)="showEdit(node.data.ID)">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-xs btn-danger" data-toggle="tooltip" title="Xóa danh mục này" (click)="delete(node.data.ID)">
+          <!-- <button class="btn btn-xs btn-danger" data-toggle="tooltip" title="Xóa danh mục này" (click)="delete(node.data.ID)">
             <i class="fa fa-trash" aria-hidden="true"></i>
-          </button>
+          </button> -->
         </ng-template>
       </tree-root>
     </div>
@@ -153,8 +153,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả SEO</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" name="metaDescription" class="form-control"
-              />
+              <textarea type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" name="metaDescription" class="form-control"></textarea>              
             </div>
           </div>
           <div class="form-group">
@@ -165,11 +164,11 @@
                   <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                 </label>
               </div>
-              <div class="checkbox">
+              <!-- <div class="checkbox">
                 <label>
                   <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
                 </label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="ln_solid"></div>

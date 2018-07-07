@@ -65,7 +65,7 @@ export class MenuComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = { Status: true};
+    this.entity = { Target:false, Status: true};
     this.loadMenuGroups();
     this.loadMenusNonPaging();
     this.modalTitle = "Thêm";

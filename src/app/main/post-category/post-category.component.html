@@ -23,7 +23,7 @@
       <div class="x_title">
         <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
           title="Hãy chọn danh mục muốn xóa bên dưới, sau đó click nút này để xóa danh mục đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa </button>
-        <button class="btn btn-success" data-toggle="tooltip" title="Thêm một danh mục mới" (click)="showAddEditModal()">Thêm danh mục</button>
+        <!-- <button class="btn btn-success" data-toggle="tooltip" title="Thêm một danh mục mới" (click)="showAddEditModal()">Thêm danh mục</button> -->
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
