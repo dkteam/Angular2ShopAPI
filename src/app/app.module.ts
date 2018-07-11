@@ -1,3 +1,4 @@
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -36,8 +37,8 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
   ],
   providers: [AuthGuard,
-    { provide: BrowserXhr, useClass: NgProgressBrowserXhr }
-    
+    { provide: BrowserXhr, useClass: NgProgressBrowserXhr },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

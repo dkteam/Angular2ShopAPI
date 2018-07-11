@@ -49,7 +49,9 @@ export class OrderComponent implements OnInit {
       + '&paymentStatus=' + this.filterPaymentStatus)
       .subscribe((response: any) => {
         this.orders = response.Items;
-        this.pageIndex = response.PageIndex;
+        this.pageIndex = response.PageIndex;         
+        this.pageSize = response.PageSize;
+        this.totalRow = response.TotalRows;
       }, error => this._dataService.handleError(error));
   }
   public reset() {

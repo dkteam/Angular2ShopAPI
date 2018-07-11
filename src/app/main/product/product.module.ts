@@ -27,7 +27,8 @@ import { TagInputModule } from 'ngx-chips';
     CKEditorModule,
     TagInputModule,
     //BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule.forRoot()
   ],
   declarations: [ProductComponent],
   providers: [DataService, UtilityService, UploadService]

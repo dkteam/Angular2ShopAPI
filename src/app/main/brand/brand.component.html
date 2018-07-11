@@ -168,6 +168,21 @@
               <img [src]="baseFolder + entity.Image" width="128" />
             </div>
           </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <!-- <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
+                </label>
+              </div> -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị ra trang chủ
+                </label>
+              </div>
+            </div>
+          </div>
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">

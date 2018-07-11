@@ -85,11 +85,11 @@ export class UserComponent implements OnInit {
 
   loadData() {
     this._dataService.get('/api/appUser/getlistpaging?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
-      .subscribe((respone: any) => {
-        this.users = respone.Items;
-        this.pageIndex = respone.PageIndex;
-        this.pageSize = respone.PageSize;
-        this.totalRow = respone.TotalRows;
+      .subscribe((response: any) => {
+        this.users = response.Items;
+        this.pageIndex = response.PageIndex;
+        this.pageSize = response.PageSize;
+        this.totalRow = response.TotalRows;
       });
   }
 

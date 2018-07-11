@@ -65,7 +65,9 @@ export class PostComponent implements OnInit {
     this._dataService.get('/api/post/getall?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&keyword=' + this.filter + '&categoryId=' + this.filterCategoryID)
       .subscribe((response: any) => {
         this.posts = response.Items;
-        this.pageIndex = response.PageIndex;
+        this.pageIndex = response.PageIndex;        
+        this.pageSize = response.PageSize;
+        this.totalRow = response.TotalRows;
       }, error => this._dataService.handleError(error));
   }
 

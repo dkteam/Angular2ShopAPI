@@ -104,39 +104,63 @@ export class ProductCategoryComponent implements OnInit {
   // }
 
   //Save change for modal popup
-  public saveChanges(form: NgForm) {
-    if (form.valid) {
-      let fi = this.image.nativeElement;
-      if (fi.files.length > 0) {
-        this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, fi.files).then((imageUrl: string) => {
-          this.entity.Image = imageUrl;
-        }).then(() => {
-          this.saveData(form);
-        });
+  // public saveChanges(form: NgForm) {
+  //   if (form.valid) {
+  //     let fi = this.image.nativeElement;
+  //     if (fi.files.length > 0) {
+  //       this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, fi.files).then((imageUrl: string) => {
+  //         this.entity.Image = imageUrl;
+  //       }).then(() => {
+  //         this.saveData(form);
+  //       });
+  //     }
+  //     else {
+  //       this.saveData(form);
+  //     }
+  //   }
+  // }
+  // private saveData(form) {
+  //   if (this.entity.ID == undefined) {
+  //     this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //       this.search();
+  //       this.addEditModal.hide();
+  //       form.resetForm();
+  //       this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+  //     });
+  //   }
+  //   else {
+  //     this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //       this.search();
+  //       this.addEditModal.hide();
+  //       form.resetForm();
+  //       this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+  //     }, error => this._dataService.handleError(error));
+  //   }
+  // }
+
+  saveChanges(form: NgForm) {
+    if (form) {
+      if (this.entity.ID == undefined) {
+        this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity))
+          .subscribe((respone: any) => {
+            this.search();
+            this.addEditModal.hide();
+            form.resetForm();
+            this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+          }, error => this._dataService.handleError(error));
       }
       else {
-        this.saveData(form);
+        this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity))
+          .subscribe((respone: any) => {
+            this.search();
+            this.addEditModal.hide();
+            form.resetForm();
+            this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+          }, error => this._dataService.handleError(error));
       }
     }
   }
-  private saveData(form) {
-    if (this.entity.ID == undefined) {
-      this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
-        this.search();
-        this.addEditModal.hide();
-        form.resetForm();
-        this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-      });
-    }
-    else {
-      this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
-        this.search();
-        this.addEditModal.hide();
-        form.resetForm();
-        this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
-      }, error => this._dataService.handleError(error));
-    }
-  }
+  
 
   public onSelectedChange($event) {
     console.log($event);

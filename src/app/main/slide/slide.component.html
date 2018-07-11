@@ -152,6 +152,15 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Link </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" #url="ngModel" [(ngModel)]="entity.Url" maxlength="256" name="url" class="form-control" />             
+            </div>
+            <div *ngIf="url.errors && (url.dirty || url.touched)" class="label label-danger">
+              Tối đa 256 ký tự
+            </div>
+          </div>
+          <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Text 1 </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="text" #text1="ngModel" [(ngModel)]="entity.Text1" maxlength="256" name="text1" class="form-control" />             
@@ -223,7 +232,7 @@
                 <br/>                
                 <span style="color: #42A948">Màu xanh:</span> Hợp lệ
                 <br/>
-                <span>Không màu:</span> Không bắt buộc nhập
+                <span>Không màu:</span> Không bắt buộc nhập.
                 <span>Mặc định:</span> là slide, nếu không tick vào SubSlide hoặc Banner
               </small>
               <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>              

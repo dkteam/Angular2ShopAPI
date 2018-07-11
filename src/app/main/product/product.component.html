@@ -49,7 +49,8 @@
   <div class="x_panel">
     <div class="x_title">
       <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-        title="Hãy chọn sản phẩm muốn xóa bên dưới, sau đó click nút này để xóa sản phẩm đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa</button>
+        title="Hãy chọn sản phẩm muốn xóa bên dưới, sau đó click nút này để xóa sản phẩm đã chọn." [disabled]="deleteButtonFlag"
+        (click)="deleteMulti()">Xóa</button>
       <button *ngIf="_authenService.hasPermission('PRODUCT','create')" data-toggle="tooltip" type="button" class="btn btn-primary"
         title="Thêm sản phẩm" (click)="showAdd()">Thêm sản phẩm</button>
       <ul class="nav navbar-right panel_toolbox">
@@ -112,7 +113,7 @@
                 <!-- <input type="checkbox" name="table_records" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}"> -->
                 <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}">
               </td>
-                 <td class=" ">
+              <td class=" ">
                 <a [routerLink]="" (click)="showEdit(item.ID)" style="font-weight: bold; font-style: italic">{{item.Name}}</a>
               </td>
               <td class=" ">
@@ -123,13 +124,17 @@
               <td class=" ">{{item.ProductCategory.Name}}</td>
               <td class=" ">{{item.PromotionPrice}}</td>
               <td class=" ">{{item.CreatedDate | date}}</td>
-              <td class=" ">{{item.CreatedBy}}</td>           
+              <td class=" ">{{item.CreatedBy}}</td>
               <td *ngIf="item.Status==true">
-                  <span><label class="label label-success">Kích hoạt </label></span>
-                </td>
-                <td *ngIf="item.Status==false">
-                  <span><label class="label label-danger">Đã khóa </label></span>
-                </td>
+                <span>
+                  <label class="label label-success">Kích hoạt </label>
+                </span>
+              </td>
+              <td *ngIf="item.Status==false">
+                <span>
+                  <label class="label label-danger">Đã khóa </label>
+                </span>
+              </td>
               <td *ngIf="_authenService.hasPermission('PRODUCT','update') || _authenService.hasPermission('PRODUCT','delete')" class="last">
                 <button class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Quản lý ảnh" *ngIf="_authenService.hasPermission('PRODUCT','update')"
                   (click)="showImageManage(item.ID)">
@@ -151,6 +156,14 @@
             </tr>
           </tbody>
         </table>
+        <!-- <div class="col-md-12">
+          <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+            [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
+        </div> -->
+        <div class="col-md-12">
+          <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+            [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
+        </div>
       </div>
       <!-- <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
@@ -166,10 +179,12 @@
         </div>
 
       </div>
-      <div *ngIf="products && products.length > 0" class="col-md-12">
+      <!-- <div *ngIf="products && products.length > 0" class="col-md-12">
         <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
           [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
-      </div>
+      </div> -->
+
+
     </div>
   </div>
 
@@ -203,8 +218,8 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Mã sản phẩm</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="text" #productCode="ngModel" [(ngModel)]="entity.ProductCode"  maxlength="256" name="productCode"
-                    class="form-control" />
+                  <input type="text" #productCode="ngModel" [(ngModel)]="entity.ProductCode" maxlength="256" name="productCode" class="form-control"
+                  />
                 </div>
               </div>
               <div class="form-group">
@@ -248,51 +263,50 @@
                     <option value="">--Chọn thương hiệu--</option>
                     <option *ngFor="let x of brands" [value]="x.ID">{{x.Name}}</option>
                   </select>
-                  <input type="hidden" [(ngModel)]="entity.BrandID" name="brandID" class="form-control" />  
+                  <input type="hidden" [(ngModel)]="entity.BrandID" name="brandID" class="form-control" />
                   <div *ngIf="brandID.errors && (brandID.dirty || brandID.touched)" class="label label-danger">
-                      Hãy chọn một thương hiệu
-                    </div>             
+                    Hãy chọn một thương hiệu
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Xuất xứ</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" required #originID name="originID" [(ngModel)]="entity.OriginID">
+                  <select class="form-control" #originID name="originID" [(ngModel)]="entity.OriginID">
                     <option value="">--Chọn xuất xứ--</option>
                     <option *ngFor="let x of origins" [value]="x.ID">{{x.Name}}</option>
                   </select>
-                  <input type="hidden" [(ngModel)]="entity.OriginID" name="originID" class="form-control" />   
+                  <input type="hidden" [(ngModel)]="entity.OriginID" name="originID" class="form-control" />
                   <div *ngIf="originID.errors && (originID.dirty || originID.touched)" class="label label-danger">
-                      Hãy chọn xuất xứ của sản phẩm
-                    </div>            
+                    Hãy chọn xuất xứ của sản phẩm
+                  </div>
                 </div>
-              </div> 
+              </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Thời gian bảo hành</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="text" #warranty="ngModel" [(ngModel)]="entity.Warranty"  maxlength="256" name="warranty"
-                    class="form-control" />
+                  <input type="text" #warranty="ngModel" [(ngModel)]="entity.Warranty" maxlength="256" name="warranty" class="form-control"
+                  />
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Số lượng</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="number" #quantity="ngModel" [(ngModel)]="entity.Quantity"  maxlength="256" name="quantity"
-                    class="form-control" />
+                  <input type="number" #quantity="ngModel" [(ngModel)]="entity.Quantity" maxlength="256" name="quantity" class="form-control"
+                  />
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Trọng lượng</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="text" #weight="ngModel" [(ngModel)]="entity.Weight"  maxlength="256" name="weight"
-                    class="form-control" />
+                  <input type="text" #weight="ngModel" [(ngModel)]="entity.Weight" maxlength="256" name="weight" class="form-control" />
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="file" #thumbnailImage name="thumbnailImage" class="form-control">
-                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg, kích thước: 215 x 215 </p>
+                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.jpg, *.jpeg, kích thước: 400 x 400 </p>
                   <input type="hidden" [(ngModel)]="entity.ThumbnailImage" name="imageUrl" />
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.ThumbnailImage">
@@ -351,7 +365,7 @@
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
                 </div>
-              </div>       
+              </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Chi tiết sản phẩm</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">

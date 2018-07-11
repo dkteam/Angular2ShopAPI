@@ -18,7 +18,7 @@ import { AuthenService } from '../../core/services/authen.service';
 export class MenuComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
   public pageIndex: number = 1;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';

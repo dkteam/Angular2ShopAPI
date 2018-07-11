@@ -18,7 +18,7 @@ import { AuthenService } from '../../core/services/authen.service';
 export class PriceRequestComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
   public pageIndex: number = 1;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
@@ -46,7 +46,7 @@ export class PriceRequestComponent implements OnInit {
         this.pageIndex = respone.PageIndex;
         this.pageSize = respone.PageSize;
         this.totalRow = respone.TotalRows;
-      });
+      }, error => this._dataService.handleError(error));
   }
 
   pageChanged(event: any): void {
@@ -82,7 +82,7 @@ export class PriceRequestComponent implements OnInit {
     });
   }
 
-  public enableDeleteButton() {    
+  public enableDeleteButton() {
     this.priceRequests.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 }

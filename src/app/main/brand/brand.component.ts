@@ -19,7 +19,7 @@ export class BrandComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
   @ViewChild('brandlogo') brandlogo;
   public pageIndex: number = 1;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';

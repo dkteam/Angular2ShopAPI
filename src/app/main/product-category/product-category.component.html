@@ -115,13 +115,13 @@
               <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự trang chủ</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="number" #homeOrder="ngModel" [(ngModel)]="entity.HomeOrder" name="homeOrder" class="form-control" />
             </div>
-          </div>
-          <div class="form-group">
+          </div> -->
+          <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #image name="image" class="form-control" [(ngModel)]="entity.Image">
@@ -132,7 +132,7 @@
             <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
               <img [src]="baseFolder + entity.Image" width="128" />
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -191,7 +191,6 @@
               <button type="submit" class="btn btn-success" [disabled]="!addEditForm.form.valid">Cập nhật</button>
             </div> -->
           </div>
-
         </form>
       </div>
     </div>
