@@ -131,6 +131,9 @@ export class OriginComponent implements OnInit {
   }
 
   public createAlias() {
-    this.entity.Alias = this._utilityService.MakeSeoTitle(this.entity.Name);
+      this.entity.Alias = this._utilityService.MakeSeoTitle(this.entity.Name);
+      if(this.entity.Name == "-" || this.entity.Name == " "){
+        this.entity.Alias = "-";
+      }
   }
 }

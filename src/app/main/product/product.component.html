@@ -93,6 +93,7 @@
               <th class="column-title">Hình ảnh</th>
               <th class="column-title">Danh mục</th>
               <th class="column-title">Giá bán</th>
+              <!-- <th class="column-title">Lượt xem</th> -->
               <th class="column-title">Ngày tạo</th>
               <th class="column-title">Người tạo</th>
               <th class="column-title">Trạng thái</th>
@@ -123,7 +124,8 @@
               </td>
               <td class=" ">{{item.ProductCategory.Name}}</td>
               <td class=" ">{{item.PromotionPrice}}</td>
-              <td class=" ">{{item.CreatedDate | date}}</td>
+              <!-- <td class=" ">{{item.ViewCount}}</td> -->
+              <td class=" ">{{item.CreatedDate | date}}</td>              
               <td class=" ">{{item.CreatedBy}}</td>
               <td *ngIf="item.Status==true">
                 <span>
@@ -160,10 +162,10 @@
           <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
             [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
         </div> -->
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
           <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
             [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
-        </div>
+        </div> -->
       </div>
       <!-- <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
@@ -179,10 +181,10 @@
         </div>
 
       </div>
-      <!-- <div *ngIf="products && products.length > 0" class="col-md-12">
+      <div *ngIf="products && products.length > 0" class="col-md-12">
         <pagination [boundaryLinks]="true" [totalItems]="totalRow" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
           [(ngModel)]="pageIndex" class="pagination-sm"></pagination>
-      </div> -->
+      </div>
 
 
     </div>
@@ -272,7 +274,7 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Xuất xứ</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" #originID name="originID" [(ngModel)]="entity.OriginID">
+                  <select class="form-control" required #originID name="originID" [(ngModel)]="entity.OriginID">
                     <option value="">--Chọn xuất xứ--</option>
                     <option *ngFor="let x of origins" [value]="x.ID">{{x.Name}}</option>
                   </select>

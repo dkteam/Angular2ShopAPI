@@ -26,7 +26,7 @@ export class ProductComponent implements OnInit {
   public totalRow: number;
   public pageIndex: number = 1;
   public pageSize: number = 20;
-  public pageDisplay: number = 10;
+  public pageDisplay: number = 5;
   public filter: string = '';
   public filterCategoryID: number;
   public products: any[];
@@ -163,7 +163,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  public pageChanged(event: any): void {
+  pageChanged(event: any): void {
     this.pageIndex = event.page;
     this.search();
   }
