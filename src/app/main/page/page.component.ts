@@ -63,7 +63,7 @@ export class PageComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = {Status: true};
+    this.entity = {Status: true, ForSEO: false};
     this.modalTitle = "Thêm";
     this.modalAddEdit.show();
   }

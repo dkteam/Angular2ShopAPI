@@ -17,6 +17,7 @@ import { SystemConstants } from '../../core/common/system.constants';
 export class ProductCategoryComponent implements OnInit {
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild("image") image;
+  @ViewChild("icon") icon;
   @ViewChild(TreeComponent) private treeProductCategory: TreeComponent;
   public filter: string = '';
   public entity: any = {};
@@ -24,7 +25,7 @@ export class ProductCategoryComponent implements OnInit {
   public _productCategoryHierachy: any[];
   public _productCategories: any[];
   public _productCategoriesForDropDownList: any[];
-  public modalTitle: string='';
+  public modalTitle: string = '';
   public baseFolder: string = SystemConstants.BASE_API;
 
   constructor(private _dataService: DataService,
@@ -104,63 +105,84 @@ export class ProductCategoryComponent implements OnInit {
   // }
 
   //Save change for modal popup
-  // public saveChanges(form: NgForm) {
-  //   if (form.valid) {
-  //     let fi = this.image.nativeElement;
-  //     if (fi.files.length > 0) {
-  //       this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, fi.files).then((imageUrl: string) => {
-  //         this.entity.Image = imageUrl;
-  //       }).then(() => {
-  //         this.saveData(form);
-  //       });
-  //     }
-  //     else {
-  //       this.saveData(form);
-  //     }
-  //   }
-  // }
-  // private saveData(form) {
-  //   if (this.entity.ID == undefined) {
-  //     this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
-  //       this.search();
-  //       this.addEditModal.hide();
-  //       form.resetForm();
-  //       this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-  //     });
-  //   }
-  //   else {
-  //     this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
-  //       this.search();
-  //       this.addEditModal.hide();
-  //       form.resetForm();
-  //       this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
-  //     }, error => this._dataService.handleError(error));
-  //   }
-  // }
-
-  saveChanges(form: NgForm) {
-    if (form) {
-      if (this.entity.ID == undefined) {
-        this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity))
-          .subscribe((respone: any) => {
-            this.search();
-            this.addEditModal.hide();
-            form.resetForm();
-            this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-          }, error => this._dataService.handleError(error));
+  public saveChanges(form: NgForm) {
+    if (form.valid) {
+      let img = this.image.nativeElement;
+      let ico = this.icon.nativeElement;
+      if (img.files.length > 0 && ico.files.length <= 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, img.files).then((imageUrl: string) => {
+          this.entity.Image = imageUrl;
+        }).then(() => {
+          this.saveData(form);
+        });
+      }else if(img.files.length <= 0 && ico.files.length > 0){
+        this._uploadService.postWithFile('/api/upload/saveImage?type=icon', null, ico.files).then((iconUrl: string) => {
+          this.entity.Icon = iconUrl;
+        }).then(() => {
+          this.saveData(form);
+        });
+      }else if (img.files.length > 0 && ico.files.length > 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=icon', null, ico.files).then((iconUrl: string) => {
+          this.entity.Icon = iconUrl;
+        }).then(() => {
+          this._uploadService.postWithFile('/api/upload/saveImage?type=productcategories', null, img.files).then((imageUrl: string) => {
+            this.entity.Image = imageUrl;
+            this.saveData(form);
+          });          
+        });
       }
       else {
-        this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity))
-          .subscribe((respone: any) => {
-            this.search();
-            this.addEditModal.hide();
-            form.resetForm();
-            this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
-          }, error => this._dataService.handleError(error));
-      }
+        this.saveData(form);
+      }     
     }
   }
-  
+  private saveData(form) {
+    if (this.entity.ID == undefined) {
+      this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.search();
+        this.addEditModal.hide();
+        form.resetForm();
+        this.resetInputFile();
+        this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+      });
+    }
+    else {
+      this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.search();
+        this.addEditModal.hide();
+        form.resetForm();
+        this.resetInputFile();
+        this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+      }, error => this._dataService.handleError(error));
+    }
+  }
+
+  // saveChanges(form: NgForm) {
+  //   if (form) {
+  //     if (this.entity.ID == undefined) {
+  //       this._dataService.post('/api/productCategory/add', JSON.stringify(this.entity))
+  //         .subscribe((respone: any) => {
+  //           this.search();
+  //           this.addEditModal.hide();
+  //           form.resetForm();
+  //           this.notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+  //         }, error => this._dataService.handleError(error));
+  //     }
+  //     else {
+  //       this._dataService.put('/api/productCategory/update', JSON.stringify(this.entity))
+  //         .subscribe((respone: any) => {
+  //           this.search();
+  //           this.addEditModal.hide();
+  //           form.resetForm();
+  //           this.notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+  //         }, error => this._dataService.handleError(error));
+  //     }
+  //   }
+  // }
+  resetInputFile() {
+    this.icon.nativeElement.value = "";
+    this.image.nativeElement.value = "";
+  }
 
   public onSelectedChange($event) {
     console.log($event);

@@ -11,6 +11,12 @@ import { NotificationService } from '../../core/services/notification.service';
 import { PaginationModule, ModalModule } from 'ngx-bootstrap';
 import { UploadService } from '../../core/services/upload.service';
 
+import { NgxSelectModule,INgxSelectOptions } from 'ngx-select-ex';
+const CustomSelectOptions: INgxSelectOptions = { // Check the interface for more options
+  optionValueField: 'ID',
+  optionTextField: 'Name'
+};
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +24,7 @@ import { UploadService } from '../../core/services/upload.service';
     PaginationModule,
     ModalModule,
     MenuRouter,
+    NgxSelectModule.forRoot(CustomSelectOptions),
     ModalModule.forRoot()
   ],
   declarations: [MenuComponent],

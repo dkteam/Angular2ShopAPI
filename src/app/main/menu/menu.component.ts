@@ -17,6 +17,9 @@ import { AuthenService } from '../../core/services/authen.service';
 })
 export class MenuComponent implements OnInit {
   @ViewChild('modalAddEdit') modalAddEdit: ModalDirective;
+  @ViewChild("icon") icon;
+  public baseFolder: string = SystemConstants.BASE_API;
+
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -65,7 +68,7 @@ export class MenuComponent implements OnInit {
   }
 
   showAddEditModal() {
-    this.entity = { Target:false, Status: true};
+    this.entity = { Target: false, Status: true };
     this.loadMenuGroups();
     this.loadMenusNonPaging();
     this.modalTitle = "Thêm";
@@ -81,26 +84,63 @@ export class MenuComponent implements OnInit {
   }
 
 
-  saveChanged(form: NgForm) {
+  // saveChanged(form: NgForm) {
+  //   if (form.valid) {
+  //     if (this.entity.ID == undefined) {
+  //       this._dataService.post('/api/menu/add', JSON.stringify(this.entity))
+  //         .subscribe((respone: any) => {
+  //           this.loadData();
+  //           this.modalAddEdit.hide();
+  //           form.resetForm();
+  //           this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+  //         }, error => this._dataService.handleError(error));
+  //     }
+  //     else {
+  //       this._dataService.put('/api/menu/update', JSON.stringify(this.entity))
+  //         .subscribe((respone: any) => {
+  //           this.loadData();
+  //           this.modalAddEdit.hide();
+  //           form.resetForm();
+  //           this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+  //         }, error => this._dataService.handleError(error));
+  //     }
+  //   }
+  // }
+
+  public saveChanged(form: NgForm) {
     if (form.valid) {
-      if (this.entity.ID == undefined) {
-        this._dataService.post('/api/menu/add', JSON.stringify(this.entity))
-          .subscribe((respone: any) => {
-            this.loadData();
-            this.modalAddEdit.hide();
-            form.resetForm();
-            this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
-          }, error => this._dataService.handleError(error));
+      let ico = this.icon.nativeElement;
+      if(ico.files.length > 0){
+        this._uploadService.postWithFile('/api/upload/saveImage?type=icon', null, ico.files).then((iconUrl: string) => {
+          this.entity.Icon = iconUrl;
+        }).then(() => {
+          this.saveData(form);
+        });
       }
       else {
-        this._dataService.put('/api/menu/update', JSON.stringify(this.entity))
-          .subscribe((respone: any) => {
-            this.loadData();
-            this.modalAddEdit.hide();
-            form.resetForm();
-            this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
-          }, error => this._dataService.handleError(error));
-      }
+        this.saveData(form);
+      }     
+    }
+  }
+
+  private saveData(form) {
+    if (this.entity.ID == undefined) {
+      this._dataService.post('/api/menu/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.loadData();
+        this.modalAddEdit.hide();
+        form.resetForm();
+        this.resetInputFile();
+        this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+      });
+    }
+    else {
+      this._dataService.put('/api/menu/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+        this.loadData();
+        this.modalAddEdit.hide();
+        form.resetForm();
+        this.resetInputFile();
+        this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+      }, error => this._dataService.handleError(error));
     }
   }
 
@@ -132,5 +172,27 @@ export class MenuComponent implements OnInit {
     this._dataService.get('/api/menu/getall').subscribe((response: any[]) => {
       this.menusNonPaging = response;
     }, error => this._dataService.handleError(error));
+  }
+
+  public deleteMulti() {
+    this.checkedItems = this.menus.filter(x => x.Checked);
+    var checkedIds = [];
+    for (var i = 0; i < this.checkedItems.length; ++i)
+      checkedIds.push(this.checkedItems[i]["ID"]);
+
+    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this._dataService.del('/api/menu/deletemulti', 'checkedItems', JSON.stringify(checkedIds)).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
+        this.loadData();
+      }, error => this._dataService.handleError(error));
+    });
+  }
+
+  public enableDeleteButton() {    
+    this.menus.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
+  }
+
+  resetInputFile() {
+    this.icon.nativeElement.value = "";
   }
 }

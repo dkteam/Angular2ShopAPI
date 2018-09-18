@@ -102,6 +102,7 @@ export class SlideComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -111,6 +112,7 @@ export class SlideComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -128,5 +130,9 @@ export class SlideComponent implements OnInit {
         this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
         this.loadData();
       });
+  }
+
+  resetInputFile() {
+    this.slide.nativeElement.value = "";
   }
 }

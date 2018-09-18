@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 import { DataService } from '../../core/services/data.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { UtilityService } from '../../core/services/utility.service';
@@ -8,6 +10,7 @@ import { MessageConstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
 import { UploadService } from '../../core/services/upload.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+
 // import { Router } from '@angular/router';
 // import { CKEditorComponent } from 'ng2-ckeditor';
 
@@ -20,6 +23,7 @@ export class ProductComponent implements OnInit {
   /*Declare modal */
   @ViewChild('addEditModal') public addEditModal: ModalDirective;
   @ViewChild("thumbnailImage") thumbnailImage;
+  @ViewChild("image") image;
   /*Product manage */
   public baseFolder: string = SystemConstants.BASE_API;
   public entity: any;
@@ -33,10 +37,12 @@ export class ProductComponent implements OnInit {
   public productCategories: any[];
   public brands: any[];
   public origins: any[];
+  public batteryTerminals: any[];
+  public positionBatteryTerminals: any[];
   public inputTags: any = [];;
   public checkedItems: any[];
   public deleteButtonFlag: boolean = true;
-  
+
   /*Product Image*/
   public imageEntity: any = {};
   public productImages: any = [];
@@ -86,9 +92,11 @@ export class ProductComponent implements OnInit {
   //Show add form
   public showAdd() {
     this.inputTags = [];
-    this.entity = { Content: '', Status: true };
+    this.entity = { Content: '', Status: true , Quantity: 1000};
     this.loadBrands();
     this.loadOrigins();
+    this.loadBatteryTerminals();
+    this.loadPositionBatteryTerminals();
     this.addEditModal.show();
   }
   //Show edit form
@@ -96,6 +104,8 @@ export class ProductComponent implements OnInit {
     this.entity = {};
     this.loadBrands();
     this.loadOrigins();
+    this.loadBatteryTerminals();
+    this.loadPositionBatteryTerminals();
     this._dataService.get('/api/product/detail/' + id).subscribe((response: any) => {
       this.entity = response;
       this.inputTags = this._utilityService.ConvertStringCommaToArray(response.Tags);
@@ -124,33 +134,64 @@ export class ProductComponent implements OnInit {
       this.brands = response;
     }, error => this._dataService.handleError(error));
   }
-  
+
   private loadOrigins() {
     this._dataService.get('/api/origin/getall?filter=').subscribe((response: any[]) => {
       this.origins = response;
     }, error => this._dataService.handleError(error));
   }
+
+  private loadBatteryTerminals() {
+    this._dataService.get('/api/batteryTerminal/getall?filter=').subscribe((response: any[]) => {
+      this.batteryTerminals = response;
+    }, error => this._dataService.handleError(error));
+  }
+
+  private loadPositionBatteryTerminals() {
+    this._dataService.get('/api/positionBatteryTerminal/getall?filter=').subscribe((response: any[]) => {
+      this.positionBatteryTerminals = response;
+    }, error => this._dataService.handleError(error));
+  }
   //Save change for modal popup
-  public saveChanges(valid: boolean) {
-    if (valid) {
-      let fi = this.thumbnailImage.nativeElement;
-      if (fi.files.length > 0) {
-        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
-          this.entity.ThumbnailImage = imageUrl;
+  public saveChanges(form: NgForm) {
+    if (form.valid) {
+      let img = this.image.nativeElement;
+      let thumnail = this.thumbnailImage.nativeElement;
+      if (img.files.length > 0 && thumnail.files.length <= 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, img.files).then((imageUrl: string) => {
+          this.entity.Image = imageUrl;
         }).then(() => {
-          this.saveData();
+          this.saveData(form);
+        });
+      } else if (img.files.length <= 0 && thumnail.files.length > 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=productThumbnail', null, thumnail.files).then((iconUrl: string) => {
+          this.entity.ThumbnailImage = iconUrl;
+        }).then(() => {
+          this.saveData(form);
+        });
+      } else if (img.files.length > 0 && thumnail.files.length > 0) {
+        this._uploadService.postWithFile('/api/upload/saveImage?type=productThumbnail', null, thumnail.files).then((iconUrl: string) => {
+          this.entity.ThumbnailImage = iconUrl;
+        }).then(() => {
+          this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, img.files).then((imageUrl: string) => {
+            this.entity.Image = imageUrl;
+            this.saveData(form);
+          });
         });
       }
       else {
-        this.saveData();
+        this.saveData(form);
       }
     }
   }
-  private saveData() {
+
+  private saveData(form) {
     if (this.entity.ID == undefined) {
       this._dataService.post('/api/product/add', JSON.stringify(this.entity)).subscribe((response: any) => {
         this.search();
         this.addEditModal.hide();
+        form.resetForm();
+        this.resetInputFile();
         this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
       });
     }
@@ -158,10 +199,45 @@ export class ProductComponent implements OnInit {
       this._dataService.put('/api/product/update', JSON.stringify(this.entity)).subscribe((response: any) => {
         this.search();
         this.addEditModal.hide();
+        form.resetForm();
+        this.resetInputFile();
         this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
       }, error => this._dataService.handleError(error));
     }
   }
+  // public saveChanges(valid: boolean) {
+  //   if (valid) {
+  //     let fi = this.thumbnailImage.nativeElement;
+  //     if (fi.files.length > 0) {
+  //       this._uploadService.postWithFile('/api/upload/saveImage?type=product', null, fi.files).then((imageUrl: string) => {
+  //         this.entity.ThumbnailImage = imageUrl;
+  //       }).then(() => {
+  //         this.saveData();
+  //         this.resetInputFile();
+  //       });
+  //     }
+  //     else {
+  //       this.saveData();
+  //       this.resetInputFile();
+  //     }
+  //   }
+  // }
+  // private saveData() {
+  //   if (this.entity.ID == undefined) {
+  //     this._dataService.post('/api/product/add', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //       this.search();
+  //       this.addEditModal.hide();
+  //       this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+  //     });
+  //   }
+  //   else {
+  //     this._dataService.put('/api/product/update', JSON.stringify(this.entity)).subscribe((response: any) => {
+  //       this.search();
+  //       this.addEditModal.hide();
+  //       this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
+  //     }, error => this._dataService.handleError(error));
+  //   }
+  // }
 
   pageChanged(event: any): void {
     this.pageIndex = event.page;
@@ -173,7 +249,7 @@ export class ProductComponent implements OnInit {
   }
 
   public onTagAdded(e: any) {
-    if(this.inputTags==null){
+    if (this.inputTags == null) {
       this.inputTags = [];
     }
     this.inputTags.push(e.display);
@@ -203,7 +279,7 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  public enableDeleteButton() {    
+  public enableDeleteButton() {
     this.products.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
   }
 
@@ -243,6 +319,72 @@ export class ProductComponent implements OnInit {
         });
       }
     }
+  }
+
+  resetInputFile() {
+    this.thumbnailImage.nativeElement.value = "";
+    this.image.nativeElement.value = "";
+  }
+
+  /*Quản lý dòng xe sử dụng sản phẩm */
+  public productCarLineEntity: any = {};
+  public productCarLines: any = [];
+  public carBrands: any[];
+  public carLines: any[];
+  @ViewChild('productCarLineManageModal') public productCarLineManageModal: ModalDirective;
+
+  public showProductCarLineManage(id: number) {
+    this.productCarLineEntity = {
+      ProductID: id
+    };
+    // this.loadColors();
+    // this.loadSizes();
+    // this.loadProductQuantities(id);
+    this.loadCarBrands();
+    this.loadProductCarLine(id);
+    this.productCarLineManageModal.show();
+
+  }
+
+  public loadCarBrands() {
+    this._dataService.get('/api/carBrand/getall?filter=').subscribe((response: any[]) => {
+      this.carBrands = response;
+    }, error => this._dataService.handleError(error));
+  }
+
+  public listCarLineByCarBrandID(id: number) {
+    this._dataService.get('/api/carLine/getallByBrandID?brandId=' + id).subscribe((response: any[]) => {
+      this.carLines = response;
+    }, error => this._dataService.handleError(error));
+  }
+
+  public loadProductCarLine(id: any) {
+    this._dataService.get('/api/productCarLine/getallbyproductid?productId=' + id).subscribe((response: any[]) => {
+      this.productCarLines = response;
+    }, error => this._dataService.handleError(error));
+  }
+
+  public saveProductCarLine(form: NgForm) {
+    if (form) {
+      this._dataService.post('/api/productCarLine/add', JSON.stringify(this.productCarLineEntity)).subscribe((response: any) => {
+        this.loadProductCarLine(this.productCarLineEntity.ProductID);
+        this.productCarLineEntity = {
+          ProductID: this.productCarLineEntity.ProductID
+        };
+        form.resetForm();
+        this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
+      }, error => this._dataService.handleError(error));
+    }
+  }
+
+  public deleteProductCarLine(productId: number, carLineId: number) {
+    var parameters = { "productId": productId, "carLineId": carLineId };
+    this._notificationService.printConfirmationDialog(MessageConstants.CONFIRM_DELETE_MSG, () => {
+      this._dataService.deleteWithMultiParams('/api/productCarLine/delete', parameters).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageConstants.DELETED_OK_MSG);
+        this.loadProductCarLine(productId);
+      }, error => this._dataService.handleError(error));
+    });
   }
 
   /*Quản lý số lượng */

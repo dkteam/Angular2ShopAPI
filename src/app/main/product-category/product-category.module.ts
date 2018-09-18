@@ -10,6 +10,11 @@ import { DataService } from './../../core/services/data.service';
 import { UtilityService } from './../../core/services/utility.service';
 import { UploadService } from '../../core/services/upload.service';
 
+// import { NgxSelectModule,INgxSelectOptions } from 'ngx-select-ex';
+// const ProductCategorySelectOptions: INgxSelectOptions = { // Check the interface for more options
+//   optionValueField: 'ID',
+//   optionTextField: 'Name'
+// };
 
 @NgModule({
   imports: [
@@ -17,7 +22,8 @@ import { UploadService } from '../../core/services/upload.service';
     ProductCategoryRouter,
     TreeModule,
     ModalModule,
-    FormsModule
+    FormsModule,
+    // NgxSelectModule.forRoot(ProductCategorySelectOptions)
   ],
   declarations: [ProductCategoryComponent],
   providers: [DataService, UtilityService, UploadService]

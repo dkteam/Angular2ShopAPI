@@ -104,6 +104,7 @@ export class BrandComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -113,6 +114,7 @@ export class BrandComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -153,5 +155,9 @@ export class BrandComponent implements OnInit {
 
   public enableDeleteButton() {    
     this.brands.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
+  }
+
+  resetInputFile() {
+    this.brandlogo.nativeElement.value = "";
   }
 }

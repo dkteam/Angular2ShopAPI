@@ -155,6 +155,7 @@ export class UserComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.CREATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -164,6 +165,7 @@ export class UserComponent implements OnInit {
           this.loadData();
           this.modalAddEdit.hide();
           form.resetForm();
+          this.resetInputFile();
           this._notificationService.printSuccessMessage(MessageConstants.UPDATED_OK_MSG);
         }, error => this._dataService.handleError(error));
     }
@@ -189,5 +191,9 @@ export class UserComponent implements OnInit {
 
   private selectedDate(value: any) {
     this.entity.BirthDay = moment(value.end._d).format('DD/MM/YYYY');
+  }
+
+  resetInputFile() {
+    this.avatar.nativeElement.value = "";
   }
 }

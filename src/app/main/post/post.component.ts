@@ -119,10 +119,12 @@ export class PostComponent implements OnInit {
           this.entity.Image = imageUrl;
         }).then(() => {
           this.saveData();
+          this.resetInputFile();
         });
       }
       else {
         this.saveData();
+        this.resetInputFile();
       }
     }
   }
@@ -184,5 +186,9 @@ export class PostComponent implements OnInit {
 
   public enableDeleteButton() {    
     this.posts.filter(x => x.Checked).length != 0 ? this.deleteButtonFlag = false : this.deleteButtonFlag = true;
+  }
+
+  resetInputFile() {
+    this.image.nativeElement.value = "";
   }
 }

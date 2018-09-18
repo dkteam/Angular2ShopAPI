@@ -49,7 +49,8 @@
   <div class="x_panel">
     <div class="x_title">
       <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-        title="Hãy chọn bài viết muốn xóa bên dưới, sau đó click nút này để xóa bài viết đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa</button>
+        title="Hãy chọn bài viết muốn xóa bên dưới, sau đó click nút này để xóa bài viết đã chọn." [disabled]="deleteButtonFlag"
+        (click)="deleteMulti()">Xóa</button>
       <button *ngIf="_authenService.hasPermission('PRODUCT','create')" data-toggle="tooltip" type="button" class="btn btn-primary"
         title="Thêm bài viết" (click)="showAdd()">Thêm bài viết</button>
       <ul class="nav navbar-right panel_toolbox">
@@ -58,7 +59,7 @@
             <i class="fa fa-chevron-up"></i>
           </a>
         </li>
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <i class="fa fa-wrench"></i>
           </a>
@@ -70,7 +71,7 @@
               <a href="#">Settings 2</a>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li>
           <a class="close-link">
             <i class="fa fa-close"></i>
@@ -84,7 +85,7 @@
         <table class="table table-striped jambo_table bulk_action">
           <thead>
             <tr class="headings">
-               <!-- <th>
+              <!-- <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th> -->
               <th class="column-title"># </th>
@@ -112,7 +113,9 @@
                 <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="item.Checked" [name]="item.ID" [ngModelOptions]="{standalone: true}">
               </td>
               <td class=" ">
-                <a [routerLink]="" (click)="showEdit(item.ID)"><img width="128" class="img-responsive" [src]="baseFolder + item.Image" /></a>
+                <a [routerLink]="" (click)="showEdit(item.ID)">
+                  <img width="128" class="img-responsive" [src]="baseFolder + item.Image" />
+                </a>
               </td>
               <td class=" ">
                 <a [routerLink]="" (click)="showEdit(item.ID)" style="font-weight: bold; font-style: italic">{{item.Name}}</a>
@@ -121,10 +124,14 @@
               <td class=" ">{{item.CreatedBy}}</td>
               <td class=" ">{{item.CreatedDate | date}}</td>
               <td *ngIf="item.Status==true">
-                <span><label class="label label-success">Kích hoạt </label></span>
+                <span>
+                  <label class="label label-success">Kích hoạt </label>
+                </span>
               </td>
               <td *ngIf="item.Status==false">
-                <span><label class="label label-danger">Đã khóa </label></span>
+                <span>
+                  <label class="label label-danger">Đã khóa </label>
+                </span>
               </td>
               <td *ngIf="_authenService.hasPermission('POST','update') || _authenService.hasPermission('POST','delete')" class="last">
                 <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Cập nhật sản phẩm" *ngIf="_authenService.hasPermission('POST','update')"
@@ -192,7 +199,8 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-                  <input type="text" #name="ngModel" (keyup)="createAlias()" [(ngModel)]="entity.Name" required maxlength="256" name="name" class="form-control" />
+                  <input type="text" #name="ngModel" (keyup)="createAlias()" placeholder="--- Yêu cầu nhập ---" [(ngModel)]="entity.Name" required
+                    maxlength="256" name="name" class="form-control" />
                   <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
                     Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
                   </div>
@@ -201,7 +209,8 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Tiêu đề SEO</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <input type="text" #alias="ngModel" [(ngModel)]="entity.Alias" required minlength="3" name="alias" class="form-control" />
+                  <input type="text" #alias="ngModel" [(ngModel)]="entity.Alias" placeholder="--- Yêu cầu nhập ---" required minlength="3"
+                    name="alias" class="form-control" />
                   <div *ngIf="alias.errors && (alias.dirty || alias.touched)" class="label label-danger">
                     Dữ liệu này không được để trống và độ dài tối đa 256 ký tự
                   </div>
@@ -211,21 +220,26 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <select class="form-control" #categoryId required name="categoryID" [(ngModel)]="entity.CategoryID">
+                  <!-- <select class="form-control" #categoryId required name="categoryID" [(ngModel)]="entity.CategoryID">
                     <option value="">--Chọn danh mục--</option>
                     <option *ngFor="let x of postCategories" [value]="x.ID">{{x.Name}}</option>
                   </select>
-                  <input type="hidden" [(ngModel)]="entity.CategoryID" name="categoryID" class="form-control" />
+                  <input type="hidden" [(ngModel)]="entity.CategoryID" name="categoryID" class="form-control" /> -->
                   <!-- <div *ngIf="categoryID.errors && (categoryID.dirty || categoryID.touched)" class="label label-danger">
                     Hãy chọn một danh mục cho bài viết
                   </div> -->
+                  <ngx-select required [items]="postCategories" [(ngModel)]="entity.CategoryID" placeholder="--- Yêu cầu chọn ---" #categoryId
+                    name="categoryId"></ngx-select>
+                  <div *ngIf="categoryId.errors && (categoryId.dirty || categoryId.touched)" class="label label-danger">
+                    Hãy chọn danh mục
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="file" #image name="image" class="form-control">
-                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước 400 x 200 </p>
+                  <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước 510 x 280 </p>
                   <input type="hidden" [(ngModel)]="entity.Image" name="image" />
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
@@ -256,7 +270,7 @@
             <div id="more-info" class="tab-pane fade">
               <!-- <h3>Thông tin thêm</h3> -->
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả ngắn</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
                   <textarea type="text" #description="ngModel" [(ngModel)]="entity.Description" name="description" class="form-control"></textarea>
                 </div>
@@ -283,7 +297,8 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Tags</label>
                 <div class="col-md-9 col-sm-9 col-xs-12">
-                  <tag-input [theme]="'dark'" [ngModel]="inputTags" (onRemove)="onTagRemoved($event)" (onAdd)="onTagAdded($event)" [separatorKeyCodes]="[188]" name="tags"></tag-input>
+                  <tag-input [theme]="'dark'" [ngModel]="inputTags" (onRemove)="onTagRemoved($event)" (onAdd)="onTagAdded($event)" [separatorKeyCodes]="[188]"
+                    name="tags"></tag-input>
                 </div>
               </div>
             </div>
@@ -291,15 +306,15 @@
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">
-                <small class="pull-left">
-                    <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
-                    <br/>
-                    <span style="color: #42A948">Màu xanh:</span> Hợp lệ
-                    <br/>
-                    <span style="color: #f0ad4e">Màu vàng:</span> Thông báo
-                    <br/>
-                    <span>Không màu:</span> Không bắt buộc nhập
-                  </small>
+              <!-- <small class="pull-left">
+                <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
+                <br/>
+                <span style="color: #42A948">Màu xanh:</span> Hợp lệ
+                <br/>
+                <span style="color: #f0ad4e">Màu vàng:</span> Thông báo
+                <br/>
+                <span>Không màu:</span> Không bắt buộc nhập
+              </small> -->
               <button type="submit" class="btn btn-primary pull-right" data-toggle="tooltip" title="Nút này sẽ hiển thị khi bạn điền đầy đủ thông tin phần 'Thông tin cơ bản'"
                 [disabled]="!addEditForm.form.valid">Cập nhật</button>
               <button type="button" (click)="addEditModal.hide()" class="btn btn-default pull-right">Hủy bỏ</button>

@@ -22,8 +22,9 @@
     <div class="x_panel">
       <div class="x_title">
         <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
-          title="Hãy chọn danh mục muốn xóa bên dưới, sau đó click nút này để xóa danh mục đã chọn." [disabled]="deleteButtonFlag" (click)="deleteMulti()">Xóa </button>
-        <!-- <button class="btn btn-success" data-toggle="tooltip" title="Thêm một danh mục mới" (click)="showAddEditModal()">Thêm danh mục</button> -->
+          title="Hãy chọn danh mục muốn xóa bên dưới, sau đó click nút này để xóa danh mục đã chọn." [disabled]="deleteButtonFlag"
+          (click)="deleteMulti()">Xóa </button>
+        <button class="btn btn-success" data-toggle="tooltip" title="Thêm danh mục" (click)="showAddEditModal()">Thêm danh mục</button>
         <ul class="nav navbar-right panel_toolbox">
           <li>
             <a class="collapse-link">
@@ -161,7 +162,7 @@
               <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
             </div>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <select class="form-control" name="parentId" [(ngModel)]="entity.ParentID">
@@ -169,6 +170,24 @@
                 <option *ngFor="let x of postCategories" [value]="x.ID">{{x.Name}}</option>
               </select>
               <input type="hidden" [(ngModel)]="entity.ParentID" name="parentId" class="form-control" />
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Meta Keyword </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <textarea type="text" #metaKeyword="ngModel" maxlength="256" [(ngModel)]="entity.MetaKeyword" name="metaKeyword" class="form-control"></textarea>
+              <div *ngIf="metaKeyword.errors && (metaKeyword.dirty || metaKeyword.touched)" class="label label-danger">
+                Tối đa 256 ký tự
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả SEO </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <textarea type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" maxlength="256" name="metaDescription" class="form-control"></textarea>
+              <div *ngIf="metaDescription.errors && (metaDescription.dirty || metaDescription.touched)" class="label label-danger">
+                Tối đa 256 ký tự
+              </div>
             </div>
           </div>
           <div class="form-group">

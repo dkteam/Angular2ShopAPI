@@ -32,6 +32,8 @@ export const mainRoutes: Routes = [
 
             { path: 'origin', loadChildren: './origin/origin.module#OriginModule' },
 
+            { path: 'feedback', loadChildren: './feedback/feedback.module#FeedbackModule' },
+
             { path: 'post-category', loadChildren: './post-category/post-category.module#PostCategoryModule' },
 
             { path: 'slide', loadChildren: './slide/slide.module#SlideModule' },
@@ -44,7 +46,17 @@ export const mainRoutes: Routes = [
 
             { path: 'support-online', loadChildren: './support-online/support-online.module#SupportOnlineModule' },
 
-            { path: 'price-request', loadChildren: './price-request/price-request.module#PriceRequestModule' }
+            { path: 'contact-detail', loadChildren: './contact-detail/contact-detail.module#ContactDetailModule' },
+
+            { path: 'price-request', loadChildren: './price-request/price-request.module#PriceRequestModule' },
+
+            { path: 'battery-terminal', loadChildren: './battery-terminal/battery-terminal.module#BatteryTerminalModule' },
+
+            { path: 'position-battery-terminal', loadChildren: './position-battery-terminal/position-battery-terminal.module#PositionBatteryTerminalModule' },
+
+            { path: 'car-brand', loadChildren: './car-brand/car-brand.module#CarBrandModule' },
+
+            { path: 'car-line', loadChildren: './car-line/car-line.module#CarLineModule' }
         ]
     }
 ];

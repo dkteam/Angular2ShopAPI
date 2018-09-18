@@ -18,12 +18,19 @@ import { BrowserXhr } from '@angular/http';
 
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+// import { BatteryTerminalComponent } from './battery-terminal/battery-terminal.component';
 
 // import {GoogleAnalyticsEventsService} from "./core/services/google-analytics-events.service";
+// import { NgxSelectModule,INgxSelectOptions } from 'ngx-select-ex';
+// const CustomSelectOptions: INgxSelectOptions = { // Check the interface for more options
+//   optionValueField: 'ID',
+//   optionTextField: 'Name'
+// };
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // BatteryTerminalComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +40,9 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
     PaginationModule.forRoot(),
     CKEditorModule,
     BrowserAnimationsModule,
+    // NgxSelectModule.forRoot(CustomSelectOptions),
     NgProgressModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [AuthGuard,
     { provide: BrowserXhr, useClass: NgProgressBrowserXhr },

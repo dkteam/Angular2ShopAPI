@@ -1,7 +1,7 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>SLIDE
-      <small>Danh sách slide</small>
+    <h3>Slide
+      <small>Danh sách các slide</small>
     </h3>
   </div>
 
@@ -56,9 +56,9 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                <th>
+                <!-- <th>
                   <input type="checkbox" id="check-all" class="flat">
-                </th>
+                </th> -->
                 <th class="column-title">Hình ảnh </th>
                 <th class="column-title">Tên slide </th>
                 <th class="column-title">Mô tả </th>
@@ -80,10 +80,10 @@
 
             <tbody>
               <tr class="even pointer" *ngFor="let slide of slides">
-                <td class="a-center ">
+                <!-- <td class="a-center ">
                   <input type="checkbox" name="table_records">
-                </td>
-                <td class=" " style="width: 7%;">
+                </td> -->
+                <td class=" " style="width: 15%;">
                   <a [routerLink]="" (click)="showEditModal(slide.ID)">
                     <img [src]="baseFolder + slide.Image" class="img-responsive" style="width: 100%;" />
                   </a>
@@ -94,17 +94,25 @@
                 <td class=" ">{{slide.DisplayOrder}}</td>
                 <!-- <td class=" ">{{slide.SubSlide}}</td> -->
                 <td *ngIf="slide.SubSlide==true">
-                  <span><label class="label label-primary">SubSlide </label></span>
+                  <span>
+                    <label class="label label-primary">SubSlide </label>
+                  </span>
                 </td>
-                
+
                 <td *ngIf="slide.SubSlide==false">
-                  <span><label class="label label-dark">Slide </label></span>
+                  <span>
+                    <label class="label label-dark">Slide </label>
+                  </span>
                 </td>
                 <td *ngIf="slide.Status==true">
-                  <span><label class="label label-success">Kích hoạt </label></span>
+                  <span>
+                    <label class="label label-success">Kích hoạt </label>
+                  </span>
                 </td>
                 <td *ngIf="slide.Status==false">
-                  <span><label class="label label-danger">Đã khóa </label></span>
+                  <span>
+                    <label class="label label-danger">Đã khóa </label>
+                  </span>
                 </td>
                 <td class="last" style="text-align: center;">
                   <button *ngIf="slide.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(slide.ID)">
@@ -154,7 +162,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Link </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #url="ngModel" [(ngModel)]="entity.Url" maxlength="256" name="url" class="form-control" />             
+              <input type="text" #url="ngModel" [(ngModel)]="entity.Url" maxlength="256" name="url" class="form-control" />
             </div>
             <div *ngIf="url.errors && (url.dirty || url.touched)" class="label label-danger">
               Tối đa 256 ký tự
@@ -163,20 +171,21 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Text 1 </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #text1="ngModel" [(ngModel)]="entity.Text1" maxlength="256" name="text1" class="form-control" />             
+              <ck-editor name="text1" [(ngModel)]="entity.Text1" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
             </div>
-            <div *ngIf="text1.errors && (text1.dirty || text1.touched)" class="label label-danger">
+            <!-- <div *ngIf="text1.errors && (text1.dirty || text1.touched)" class="label label-danger">
               Tối đa 256 ký tự
-            </div>
+            </div> -->
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Text 2 </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #text2="ngModel" [(ngModel)]="entity.Text2" maxlength="256" name="text2" class="form-control" />              
+              <!-- <input type="text" #text2="ngModel" [(ngModel)]="entity.Text2" maxlength="256" name="text2" class="form-control" />         -->
+              <ck-editor name="text2" [(ngModel)]="entity.Text2" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
             </div>
-            <div *ngIf="text2.errors && (text2.dirty || text2.touched)" class="label label-danger">
+            <!-- <div *ngIf="text2.errors && (text2.dirty || text2.touched)" class="label label-danger">
               Tối đa 256 ký tự
-            </div>
+            </div> -->
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
@@ -188,7 +197,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="file" #slide name="slide1" class="form-control ng-valid">
-              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước slide: 800 x 450 </p>
+              <p class="help-block label label-danger"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg, kích thước slide: 1920 x 470 </p>
               <input type="hidden" [(ngModel)]="entity.Image" name="avatarUrl" />
               <div *ngIf="slide.errors && (slide.dirty || slide.touched)" class="label label-danger">
                 Bắt buộc nhập và tối đa 50 ký tự
@@ -208,7 +217,7 @@
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" [(ngModel)]="entity.SubSlide" name="homeFlag" #status="ngModel"> SubSlide (360 x 220)
+                  <input type="checkbox" [(ngModel)]="entity.SubSlide" name="homeFlag" #status="ngModel"> SubSlide (370 x 108)
                 </label>
               </div>
               <div class="checkbox">
@@ -217,6 +226,7 @@
                 </label>
               </div>
             </div>
+    
           </div>
           <!-- <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung slide</label>
@@ -229,13 +239,14 @@
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">
               <small class="pull-left">
                 <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
-                <br/>                
+                <br/>
                 <span style="color: #42A948">Màu xanh:</span> Hợp lệ
                 <br/>
                 <span>Không màu:</span> Không bắt buộc nhập.
+                <br/>
                 <span>Mặc định:</span> là slide, nếu không tick vào SubSlide hoặc Banner
               </small>
-              <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>              
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>
               <button type="button" (click)="modalAddEdit.hide()" class="btn btn-default pull-right">Hủy bỏ</button>
             </div>
           </div>

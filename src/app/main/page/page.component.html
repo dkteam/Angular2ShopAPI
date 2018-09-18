@@ -56,12 +56,13 @@
           <table class="table table-striped jambo_table bulk_action">
             <thead>
               <tr class="headings">
-                <th>
+                <!-- <th>
                   <input type="checkbox" id="check-all" class="flat">
-                </th>
+                </th> -->
                 <th class="column-title">Tên trang </th>
                 <th class="column-title">Alias </th>
                 <th class="column-title">Status </th>
+                <th class="column-title">ForSEO </th>
                 <th class="column-title no-link last" style="text-align: center">
                   <span class="nobr">Sửa/Xóa</span>
                 </th>
@@ -76,10 +77,12 @@
 
             <tbody>
               <tr class="even pointer" *ngFor="let page of pages">
-                <td class="a-center ">
+                <!-- <td class="a-center ">
                   <input type="checkbox" name="table_records">
-                </td>
-                <td class=" ">{{page.Name}}</td>
+                </td> -->
+                <td class=" ">
+                    <a [routerLink]="" (click)="showEditModal(page.ID)">{{page.Name}}</a>
+               </td>
                 <td class=" ">{{page.Alias}}</td>
                 <td *ngIf="page.Status==true">
                   <span><label class="label label-success">Kích hoạt </label></span>
@@ -87,6 +90,12 @@
                 <td *ngIf="page.Status==false">
                   <span><label class="label label-danger">Đã khóa </label></span>
                 </td>
+                <td *ngIf="page.ForSEO==true">
+                    <span><label class="label label-success">forSEO </label></span>
+                  </td>
+                  <td *ngIf="page.ForSEO==false">
+                    <span><label class="label label-danger">Trang tĩnh </label></span>
+                  </td>
                 <td class="last" style="text-align: center;">
                   <button *ngIf="page.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(page.ID)">
                     <i class="fa fa-pencil-square-o"></i>
@@ -140,6 +149,30 @@
                 Bắt buộc nhập và tối đa 256 ký tự
               </div>
             </div>
+          </div>         
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung Page</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <ck-editor name="detail" [(ngModel)]="entity.Content" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Meta Keyword </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <textarea type="text" #metaKeyword="ngModel" maxlength="256" [(ngModel)]="entity.MetaKeyword" name="metaKeyword" class="form-control"></textarea>
+              <div *ngIf="metaKeyword.errors && (metaKeyword.dirty || metaKeyword.touched)" class="label label-danger">
+                Tối đa 256 ký tự
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mô tả SEO </label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <textarea type="text" #metaDescription="ngModel" [(ngModel)]="entity.MetaDescription" maxlength="256" name="metaDescription" class="form-control"></textarea>
+              <div *ngIf="metaDescription.errors && (metaDescription.dirty || metaDescription.touched)" class="label label-danger">
+                Tối đa 256 ký tự
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
@@ -149,12 +182,11 @@
                   <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                 </label>
               </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nội dung Page</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-              <ck-editor name="detail" [(ngModel)]="entity.Content" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="entity.ForSEO" name="forSEO" #forSEO="ngModel"> Dành cho SEO
+                </label>
+              </div>
             </div>
           </div>
           <div class="ln_solid"></div>

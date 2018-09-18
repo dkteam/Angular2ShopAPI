@@ -30,7 +30,7 @@
             <i class="fa fa-chevron-up"></i>
           </a>
         </li>
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <i class="fa fa-wrench"></i>
           </a>
@@ -42,7 +42,7 @@
               <a href="#">Settings 2</a>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li>
           <a class="close-link">
             <i class="fa fa-close"></i>
@@ -110,7 +110,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự</label>
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Thứ tự hiển thị</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="number" #displayOrder="ngModel" [(ngModel)]="entity.DisplayOrder" name="displayOrder" class="form-control" />
             </div>
@@ -121,18 +121,28 @@
               <input type="number" #homeOrder="ngModel" [(ngModel)]="entity.HomeOrder" name="homeOrder" class="form-control" />
             </div>
           </div> -->
-          <!-- <div class="form-group">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="file" #icon name="icon" class="form-control">
+              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg và kích thước là: 45 x 25 </p>
+              <input type="hidden" [(ngModel)]="entity.Icon" name="iconUrl" />
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Icon">
+              <img [src]="baseFolder + entity.Icon" width="128" />
+            </div>
+          </div>
+          <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Hình ảnh</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="file" #image name="image" class="form-control" [(ngModel)]="entity.Image">
-              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg và kích thước là: 196px x 70px </p>
+              <input type="file" #image name="image" class="form-control">
+              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg và kích thước là: 1170 x 200,<br/> Riêng ắc quy xe phân khối lớn thì 1920 x 476 </p>
               <input type="hidden" [(ngModel)]="entity.Image" name="imageUrl" />
             </div>
-
             <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Image">
               <img [src]="baseFolder + entity.Image" width="128" />
             </div>
-          </div> -->
+          </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -141,6 +151,9 @@
                 <option *ngFor="let x of _productCategoriesForDropDownList" [value]="x.ID">{{x.Name}}</option>
               </select>
               <input type="hidden" [(ngModel)]="entity.ParentID" name="parentId" class="form-control" />
+
+              <!-- <ngx-select [items]="_productCategoriesForDropDownList" [(ngModel)]="entity.ParentID" placeholder="--- Yêu cầu chọn ---" #parentId name="parentId"></ngx-select> -->
+           
             </div>
           </div>
 
@@ -164,11 +177,11 @@
                   <input type="checkbox" [(ngModel)]="entity.Status" name="status" #status="ngModel"> Kích hoạt
                 </label>
               </div>
-              <!-- <div class="checkbox">
+              <div class="checkbox">
                 <label>
-                  <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #status="ngModel"> Hiển thị trang chủ
+                  <input type="checkbox" [(ngModel)]="entity.HomeFlag" name="homeFlag" #homeFlag="ngModel"> Hiển thị trang chủ
                 </label>
-              </div> -->
+              </div>
             </div>
           </div>
           <div class="ln_solid"></div>

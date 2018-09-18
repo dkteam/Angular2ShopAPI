@@ -43,10 +43,12 @@
     "ng2-charts": "^1.6.0",
     "ng2-ckeditor": "^1.2.0",
     "ng2-daterangepicker": "^2.0.12",
+    "ng2-select": "^2.0.0",
     "ngx-bootstrap": "^2.0.5",
     "ngx-chips": "^1.9.2",
     "ngx-ckeditor": "^0.3.1",
     "ngx-progressbar": "^2.1.1",
+    "ngx-select-ex": "^3.5.9",
     "rxjs": "^5.5.6",
     "signalr": "^2.2.3",
     "zone.js": "^0.8.19"

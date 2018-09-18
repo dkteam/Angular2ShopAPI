@@ -84,10 +84,10 @@
                   <!-- <input type="checkbox" name="table_records"> -->
                   <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="brand.Checked" [name]="brand.ID" [ngModelOptions]="{standalone: true}">
                 </td>          
-                <td class=" " style="width: 7%;">
+                <td class=" " style="width: 10%;">
                   <a [routerLink]="" (click)="showEditModal(brand.ID)"><img [src]="baseFolder + brand.Image" class="img-responsive" style="width: 100%;"/></a>
                 </td>
-                <td class=" ">{{brand.Name}}</td>
+                <td class=" " style="text-transform: uppercase">{{brand.Name}}</td>
                 <td class=" ">{{brand.Description}}</td>
                 <td class=" ">{{brand.DisplayOrder}}</td>
                 <td class="last" style="text-align: center;">
@@ -128,7 +128,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên thương hiệu </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="hidden" [(ngModel)]="entity.Id" name="id" />
+              <input type="hidden" [(ngModel)]="entity.ID" name="id" />
               <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required maxlength="50" name="name"
                 class="form-control" />
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">

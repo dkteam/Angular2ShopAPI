@@ -21,6 +21,9 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
+          <button *ngIf="_authenService.hasPermission('PRODUCT','delete')" data-toggle="tooltip" type="button" class="btn btn-danger"
+          title="Hãy chọn menu muốn xóa bên dưới, sau đó click nút này để xóa các menu xe đã chọn." [disabled]="deleteButtonFlag"
+          (click)="deleteMulti()">Xóa</button>
         <button class="btn btn-success" data-toggle="tooltip" title="Thêm quốc gia sản xuất sản phẩm mà doanh nghiệp có kinh doanh"
           (click)="showAddEditModal()">Thêm Menu</button>
         <ul class="nav navbar-right panel_toolbox">
@@ -60,7 +63,7 @@
                 <!-- <th>
                 <input type="checkbox" id="check-all" class="flat">
               </th> -->
-                <th class="column-title">ID </th>
+                <th class="column-title"># </th>
                 <th class="column-title">Tên menu </th>
                 <th class="column-title">URL </th>
                 <th class="column-title">Thứ tự hiển thị </th>
@@ -80,16 +83,17 @@
 
             <tbody>
               <tr class="even pointer" *ngFor="let menu of menus; let i = index">
-                <!-- <td class="a-center ">
+                <td class="a-center ">
                     <input type="checkbox" (change)="enableDeleteButton()" [(ngModel)]="menu.Checked" [name]="menu.ID" [ngModelOptions]="{standalone: true}">
-                </td> -->
-                <td class=" ">{{menu.ID}}</td>
+                </td>
+                <!-- <td class=" ">{{menu.ID}}</td> -->
                 <td class=" ">
                   <a [routerLink]="" (click)="showEditModal(menu.ID)">{{menu.Name}}</a>
                 </td>
                 <td class=" ">{{menu.URL}}</td>
                 <td class=" ">{{menu.DisplayOrder}}</td>
-                <td class=" ">{{menu.ParentID}}</td>
+                <!-- <td class=" ">{{menu.ParentID}}</td> -->
+                <td class=" ">{{menu.ParentMenu}}</td>
                 <td class=" ">{{menu.MenuGroup.Name}}</td>
                 <td class="last" style="text-align: center;">
                   <button *ngIf="menu.Name != 'Admin'" class="btn btn-primary" data-toggle="tooltip" title="Sửa" (click)="showEditModal(menu.ID)">
@@ -130,7 +134,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên menu </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
               <input type="hidden" [(ngModel)]="entity.ID" name="id" />
-              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" (keyup)="createAlias()" required minlength="2" name="name" class="form-control" />
+              <input type="text" #name="ngModel" [(ngModel)]="entity.Name" placeholder="--- Yêu cầu nhập ---" (keyup)="createAlias()" required minlength="2" name="name" class="form-control" />
               <div *ngIf="name.errors && (name.dirty || name.touched)" class="label label-danger">
                 Dữ liệu này không được để trống và độ dài tối thiểu 2 ký tự
               </div>
@@ -139,7 +143,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">URL </label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #url="ngModel" required [(ngModel)]="entity.URL" name="url" class="form-control" />
+              <input type="text" #url="ngModel" required placeholder="--- Yêu cầu nhập ---" [(ngModel)]="entity.URL" name="url" class="form-control" />
               <div *ngIf="url.errors && (url.dirty || url.touched)" class="label label-danger">
                 Dữ liệu này được sinh ra tự động khi gõ tên thương hiệu, không khoảng trắng và tối đa 50 ký tự
               </div>
@@ -154,11 +158,10 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Danh mục cha</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <select class="form-control" #parentMenu name="parentMenu" [(ngModel)]="entity.ParentID">
-                <option value="">-- Chọn --</option>
-                <option *ngFor="let x of menusNonPaging" [value]="x.ID">{{x.Name}}</option>
-              </select>
-              <input type="hidden" [(ngModel)]="entity.ParentID" name="parentID" class="form-control" />
+              <ngx-select [items]="menusNonPaging" [(ngModel)]="entity.ParentID" #parentMenu name="parentMenu"></ngx-select>
+              <div *ngIf="parentMenu.errors && (parentMenu.dirty || parentMenu.touched)" class="label label-danger">
+                Hãy chọn thương hiệu
+              </div>
             </div>
           </div>
           <div class="form-group">
@@ -169,6 +172,17 @@
                 <option *ngFor="let x of menuGroups" [value]="x.ID">{{x.Name}}</option>
               </select>
               <input type="hidden" [(ngModel)]="entity.GroupID" name="groupID" class="form-control" />           
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="file" #icon name="icon" class="form-control">
+              <p class="help-block label label-warning"> chỉ hỗ trợ định dạng *.png, *.gif, *.jpg, *.jpeg và kích thước là: 25 x 25 </p>
+              <input type="hidden" [(ngModel)]="entity.Icon" name="iconUrl" />
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12" *ngIf="entity.Icon">
+              <img [src]="baseFolder + entity.Icon" width="128" />
             </div>
           </div>
           <div class="form-group">
@@ -189,11 +203,11 @@
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-9 col-sm-9 col-xs-12 pull-right">
-              <small class="pull-left">
+              <!-- <small class="pull-left">
                 <span style="color: #a94442">Màu đỏ:</span> Bắt buộc nhập hoặc dữ liệu chưa hợp lệ
                 <br/>
                 <span style="color: #42A948">Màu xanh:</span> Hợp lệ
-              </small>
+              </small> -->
               <button type="submit" class="btn btn-primary pull-right" [disabled]="!frmAddEdit.form.valid">Cập nhật</button>
               <button type="button" (click)="modalAddEdit.hide()" class="btn btn-default pull-right">Hủy bỏ</button>
             </div>

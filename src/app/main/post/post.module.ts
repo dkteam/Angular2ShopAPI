@@ -15,6 +15,12 @@ import { CKEditorModule } from 'ngx-ckeditor';
 import { TagInputModule } from 'ngx-chips';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NgxSelectModule,INgxSelectOptions } from 'ngx-select-ex';
+const CustomSelectOptions: INgxSelectOptions = { // Check the interface for more options
+  optionValueField: 'ID',
+  optionTextField: 'Name'
+};
+
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +30,8 @@ import { TagInputModule } from 'ngx-chips';
     ModalModule,
     Daterangepicker,
     MultiselectDropdownModule,
+    NgxSelectModule.forRoot(CustomSelectOptions),
+
     CKEditorModule,
     TagInputModule,
     //BrowserAnimationsModule,
