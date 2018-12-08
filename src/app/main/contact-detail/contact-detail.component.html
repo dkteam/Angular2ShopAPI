@@ -225,9 +225,9 @@
               <!-- <textarea type="text" #other="ngModel" maxlength="500" [(ngModel)]="entity.Other" name="other" class="form-control" ></textarea> -->
               <ck-editor name="other" [(ngModel)]="entity.Other" skin="moono-lisa" language="vi" [fullPage]="true"></ck-editor>
             </div>
-            <div *ngIf="other.errors && (other.dirty || other.touched)" class="label label-danger">
+            <!-- <div *ngIf="other.errors && (other.dirty || other.touched)" class="label label-danger">
               Tối đa 500 ký tự
-            </div>
+            </div> -->
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Trạng thái</label>
